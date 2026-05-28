@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kimi 社媒拆解 · Solvely Playbook v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF7F0;
+    --paper: #FFFFFF;
+    --surface: #F4EFE3;
+    --ink: #1A1814;
+    --ink-soft: #3A352E;
+    --mute: #6F665A;
+    --mute-soft: #98907F;
+    --hair: #E0D8C5;
+    --hair-soft: #EAE3D2;
+    --accent: #B14820;
+    --accent-deep: #6D2A14;
+    --accent-soft: #F0BD8B;
+    --good: #2E6B3C;
+    --warning: #C2780A;
+
+    /* Heat scale (likes) */
+    --h0: #EFEADD;   /* no tweet */
+    --h1: #F8D9B0;   /* 1-100 */
+    --h2: #EFB877;   /* 100-500 */
+    --h3: #E08A4A;   /* 500-1500 */
+    --h4: #B14820;   /* 1500-5000 */
+    --h5: #6D2A14;   /* 5000-15000 */
+    --h6: #2A0A05;   /* 15000+ */
+
+    /* Phase bands */
+    --p1: #C9C2B0;
+    --p2: #E8C490;
+    --p3: #D6CFB8;
+    --p4: #D58A4E;
+    --p5: #B14820;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .serif { font-family: 'Newsreader', Georgia, serif; font-style: italic; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace; }
+
+  /* ===== Top bar ===== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(250, 247, 240, 0.92);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--hair);
+  }
+  .topbar-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; letter-spacing: -0.005em; }
+  .brand .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
+  .brand .sub { color: var(--mute); font-weight: 400; font-size: 13px; margin-left: 6px; }
+  .topbar nav { display: flex; gap: 20px; font-size: 13.5px; color: var(--mute); }
+  .topbar nav a { color: inherit; text-decoration: none; padding: 4px 0; }
+  .topbar nav a:hover { color: var(--accent); }
+  .topbar .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mute); letter-spacing: 0.04em; }
+
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
+  .narrow { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+
+  /* ===== Hero ===== */
+  .hero {
+    padding: 56px 0 40px;
+  }
+  .hero h1 {
+    font-family: -apple-system, "PingFang SC", system-ui, sans-serif;
+    font-size: clamp(40px, 5.2vw, 60px);
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    margin: 0 0 20px;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .hero h1 em { font-family: 'Newsreader', serif; font-style: italic; font-weight: 500; color: var(--accent); letter-spacing: -0.01em; }
+  .hero .lede {
+    font-size: 18.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0 0 32px;
+    max-width: 760px;
+    text-wrap: pretty;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    margin-top: 36px;
+  }
+  .hero-stat { padding: 20px 22px; border-right: 1px solid var(--hair); }
+  .hero-stat:last-child { border-right: 0; }
+  .hero-stat .num { font-family: 'Newsreader', serif; font-style: italic; font-weight: 500; font-size: 38px; color: var(--ink); line-height: 1; letter-spacing: -0.02em; }
+  .hero-stat .num.accent { color: var(--accent); }
+  .hero-stat .lbl { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 8px; font-weight: 500; }
+
+  /* ===== Section wrapper ===== */
+  section { padding: 56px 0; }
+  section.section-bordered { border-top: 1px solid var(--hair); }
+  .section-head { margin-bottom: 32px; max-width: 880px; }
+  .section-head .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-head h2 {
+    font-family: -apple-system, "PingFang SC", system-ui, sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.018em;
+    margin: 0 0 12px;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  .section-head h2 em { font-family: 'Newsreader', serif; font-weight: 500; font-style: italic; color: var(--accent); }
+  .section-head .desc {
+    font-size: 15.5px;
+    line-height: 1.62;
+    color: var(--mute);
+    max-width: 720px;
+    text-wrap: pretty;
+  }
+
+  /* ===== Calendar Heatmap ===== */
+  .calendar-wrap {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .cal-tools {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--paper);
+    border: 1px solid var(--hair);
+    border-radius: 999px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .chip .ct { color: var(--mute); font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+  .chip.active .ct { color: rgba(250,247,240,0.6); }
+
+  .heatmap {
+    background: var(--paper);
+    border: 1px solid var(--hair);
+    padding: 24px 24px 20px;
+    overflow-x: auto;
+  }
+  .heatmap-axis-days {
+    display: grid;
+    grid-template-columns: 86px repeat(31, 1fr);
+    gap: 3px;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+  }
+  .heatmap-axis-days div { text-align: center; }
+  .heatmap-axis-days .lbl { text-align: left; font-weight: 600; }
+  .heatmap-row {
+    display: grid;
+    grid-template-columns: 86px repeat(31, 1fr);
+    gap: 3px;
+    margin-bottom: 3px;
+    align-items: center;
+  }
+  .heatmap-row .row-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    padding-right: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+  }
+  .heatmap-row .row-label .phase-tag {
+    display: inline-block;
+    width: 5px;
+    height: 22px;
+    background: var(--mute-soft);
+    flex-shrink: 0;
+  }
+  .heatmap-row .row-label .month { font-weight: 600; }
+  .heatmap-row .row-label .yr { color: var(--mute); font-size: 10px; }
+  .cell {
+    aspect-ratio: 1;
+    background: var(--h0);
+    border-radius: 3px;
+    cursor: default;
+    position: relative;
+    transition: transform 0.12s ease-out, outline 0.12s;
+    min-height: 16px;
+  }
+  .cell.has { cursor: pointer; }
+  .cell.has:hover { transform: scale(1.4); outline: 1.5px solid var(--ink); outline-offset: 1px; z-index: 5; }
+  .cell.selected { outline: 2px solid var(--ink); outline-offset: 1px; z-index: 6; }
+  .cell.dimmed { opacity: 0.22; }
+  .cell.empty { background: transparent; }
+  .cell[data-h="0"] { background: var(--h0); }
+  .cell[data-h="1"] { background: var(--h1); }
+  .cell[data-h="2"] { background: var(--h2); }
+  .cell[data-h="3"] { background: var(--h3); }
+  .cell[data-h="4"] { background: var(--h4); }
+  .cell[data-h="5"] { background: var(--h5); }
+  .cell[data-h="6"] { background: var(--h6); }
+
+  /* Phase bracket markers in row labels */
+  .heatmap-row[data-phase="1"] .phase-tag { background: var(--p1); }
+  .heatmap-row[data-phase="2"] .phase-tag { background: var(--p2); }
+  .heatmap-row[data-phase="3"] .phase-tag { background: var(--p3); }
+  .heatmap-row[data-phase="4"] .phase-tag { background: var(--p4); }
+  .heatmap-row[data-phase="5"] .phase-tag { background: var(--p5); }
+
+  /* ===== Right side: legend + selected panel ===== */
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+  }
+
+  .panel {
+    background: var(--paper);
+    border: 1px solid var(--hair);
+    padding: 18px 18px;
+  }
+  .panel-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  /* Legend */
+  .legend-rows { display: flex; flex-direction: column; gap: 5px; }
+  .legend-row {
+    display: grid;
+    grid-template-columns: 22px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .legend-row .sw { width: 16px; height: 16px; border-radius: 3px; }
+  .legend-row .ct { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--mute); }
+
+  /* Phase legend */
+  .phase-rows { display: flex; flex-direction: column; gap: 5px; }
+  .phase-row {
+    display: grid;
+    grid-template-columns: 5px 1fr auto;
+    gap: 10px;
+    align-items: stretch;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    padding: 4px 0;
+    min-height: 32px;
+  }
+  .phase-row .bar { background: var(--mute-soft); border-radius: 2px; }
+  .phase-row[data-p="1"] .bar { background: var(--p1); }
+  .phase-row[data-p="2"] .bar { background: var(--p2); }
+  .phase-row[data-p="3"] .bar { background: var(--p3); }
+  .phase-row[data-p="4"] .bar { background: var(--p4); }
+  .phase-row[data-p="5"] .bar { background: var(--p5); }
+  .phase-row .name { font-weight: 500; }
+  .phase-row .name .dates { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--mute); font-weight: 400; margin-top: 1px; }
+  .phase-row .marker { font-family: 'Newsreader', serif; font-style: italic; font-size: 22px; color: var(--accent); line-height: 1; }
+
+  /* Selected tweet panel */
+  .tweet-panel { display: flex; flex-direction: column; gap: 14px; max-height: 480px; overflow-y: auto; padding-right: 2px; }
+  .tweet-panel::-webkit-scrollbar { width: 6px; }
+  .tweet-panel::-webkit-scrollbar-thumb { background: var(--hair); border-radius: 3px; }
+  .tweet-panel-empty {
+    text-align: center;
+    padding: 28px 0;
+    color: var(--mute);
+    font-size: 13.5px;
+  }
+  .tweet-panel-empty .icon {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 36px;
+    color: var(--accent-soft);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .tweet-panel-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--hair);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tweet-card {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--hair-soft);
+  }
+  .tweet-card:last-child { border-bottom: 0; padding-bottom: 0; }
+  .tweet-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: center;
+  }
+  .tweet-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    padding: 2px 6px;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 500;
+    border-radius: 2px;
+  }
+  .tweet-type.RT { background: var(--mute); }
+  .tweet-type.REPLY { background: var(--mute-soft); color: var(--ink); }
+  .tweet-type.PIN { background: var(--accent-deep); }
+  .tweet-likes {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .tweet-likes .dim { color: var(--mute); font-size: 11px; }
+  .tweet-text {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    white-space: pre-wrap;
+    margin: 4px 0 8px;
+    word-break: break-word;
+  }
+  .tweet-stats {
+    display: flex;
+    gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--mute);
+  }
+  .tweet-stats .v { color: var(--ink); font-weight: 500; }
+  .tweet-link {
+    font-size: 11.5px;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .tweet-link:hover { border-bottom-color: var(--accent); }
+  .tweet-meta {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    background: var(--surface);
+    color: var(--mute);
+    font-size: 10px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .badge.theme { background: var(--accent-soft); color: var(--accent-deep); }
+  .badge.media { background: var(--surface); color: var(--ink-soft); }
+
+  /* ===== Insight strip below heatmap ===== */
+  .insights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .insight {
+    padding: 18px 20px;
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+  }
+  .insight .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .insight .body {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .insight .body strong { color: var(--ink); font-weight: 600; }
+
+  /* ===== Phase explainer ===== */
+  .phases-detail {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    margin-top: 24px;
+  }
+  .phase-block {
+    padding: 22px 18px;
+    border-right: 1px solid var(--hair);
+    position: relative;
+  }
+  .phase-block:last-child { border-right: 0; }
+  .phase-block::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--mute-soft);
+  }
+  .phase-block[data-p="1"]::before { background: var(--p1); }
+  .phase-block[data-p="2"]::before { background: var(--p2); }
+  .phase-block[data-p="3"]::before { background: var(--p3); }
+  .phase-block[data-p="4"]::before { background: var(--p4); }
+  .phase-block[data-p="5"]::before { background: var(--p5); }
+  .phase-block .stage {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+    margin-top: 8px;
+  }
+  .phase-block .dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+  }
+  .phase-block .summary {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-top: 14px;
+  }
+  .phase-block .data {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 10px;
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .phase-block .data .k { color: var(--mute); }
+  .phase-block .data .v { color: var(--ink); font-weight: 500; }
+
+  /* ===== TLDR ===== */
+  .tldr-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+  .tldr-item { padding: 22px 18px 24px; border-right: 1px solid var(--hair); }
+  .tldr-item:last-child { border-right: 0; }
+  .tldr-item .n { font-family: 'Newsreader', serif; font-style: italic; font-size: 24px; color: var(--accent); line-height: 1; margin-bottom: 12px; }
+  .tldr-item .h { font-weight: 600; font-size: 15.5px; line-height: 1.3; color: var(--ink); margin-bottom: 8px; }
+  .tldr-item .b { font-size: 13px; color: var(--mute); line-height: 1.5; }
+
+  /* ===== Top tweets gallery ===== */
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .top-card {
+    background: var(--paper);
+    border: 1px solid var(--hair);
+    padding: 20px 22px;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+  .top-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 6px 18px rgba(0,0,0,0.04); }
+  .top-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .top-card .rank { font-family: 'Newsreader', serif; font-style: italic; font-size: 30px; font-weight: 500; color: var(--accent); line-height: 1; }
+  .top-card .date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mute); letter-spacing: 0.04em; }
+  .top-card .tag {
+    display: inline-block;
+    font-size: 10.5px;
+    padding: 2px 7px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    border-radius: 2px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .top-card .quote {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    white-space: pre-wrap;
+    margin-bottom: 14px;
+    word-break: break-word;
+  }
+  .top-card .stats {
+    display: flex;
+    gap: 18px;
+    padding-top: 12px;
+    border-top: 1px solid var(--hair-soft);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--mute);
+  }
+  .top-card .stats .v { color: var(--ink); font-weight: 600; }
+  .top-card .stats .v.hero { color: var(--accent); }
+  .top-card .insight {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--hair);
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--accent-deep);
+  }
+
+  /* ===== Themes (horizontal bars) ===== */
+  .theme-bars { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .theme-bar {
+    display: grid;
+    grid-template-columns: 200px 1fr 80px 80px;
+    gap: 16px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--hair-soft);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .theme-bar:hover { background: var(--surface); }
+  .theme-bar .name { font-weight: 500; font-size: 14px; color: var(--ink); }
+  .theme-bar .name .sub { display: block; font-size: 11.5px; color: var(--mute); font-weight: 400; margin-top: 1px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+  .theme-bar .barwrap { position: relative; height: 12px; background: var(--surface); border-radius: 2px; overflow: hidden; }
+  .theme-bar .barfill { height: 100%; background: var(--accent); border-radius: 2px; }
+  .theme-bar .barfill.muted { background: var(--mute-soft); }
+  .theme-bar .count, .theme-bar .avg {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    text-align: right;
+    font-weight: 500;
+  }
+  .theme-bar .avg { color: var(--accent); }
+
+  /* ===== Hooks comparison ===== */
+  .hooks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .hook-card { padding: 20px 22px 22px; background: var(--paper); border: 1px solid var(--hair); border-top: 3px solid var(--accent); }
+  .hook-card.muted { border-top-color: var(--mute-soft); opacity: 0.92; }
+  .hook-card .label { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--mute); letter-spacing: 0.08em; }
+  .hook-card .name {
+    font-family: -apple-system, "PingFang SC", system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 6px 0 14px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .hook-card .num { font-family: 'Newsreader', serif; font-style: italic; font-size: 38px; color: var(--accent); line-height: 1; font-weight: 500; }
+  .hook-card.muted .num { color: var(--ink); }
+  .hook-card .num .u { font-family: -apple-system, sans-serif; font-style: normal; font-size: 12px; color: var(--mute); margin-left: 6px; font-weight: 500; }
+  .hook-card .meta { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--mute); margin: 6px 0 12px; }
+  .hook-card .ex { font-size: 13px; color: var(--ink-soft); line-height: 1.5; padding-top: 10px; border-top: 1px solid var(--hair-soft); font-style: italic; }
+
+  /* ===== Playbook ===== */
+  .plays {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 28px;
+  }
+  .play {
+    background: var(--paper);
+    border: 1px solid var(--hair);
+    padding: 24px 26px 26px;
+    position: relative;
+  }
+  .play-num {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .play-title {
+    font-family: -apple-system, "PingFang SC", system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .play-take {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 14.5px;
+    color: var(--accent-deep);
+    margin-bottom: 12px;
+    line-height: 1.45;
+  }
+  .play-body {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .play-tactic {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .play-tactic .lab { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 0.1em; margin-right: 8px; vertical-align: 1px; font-weight: 500; }
+
+  /* ===== 90 day plan ===== */
+  .plan-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    margin-top: 28px;
+    border: 1px solid var(--ink);
+  }
+  .plan-week {
+    padding: 18px 16px 20px;
+    border-right: 1px solid var(--hair);
+    border-bottom: 0;
+    position: relative;
+  }
+  .plan-week:last-child { border-right: 0; }
+  .plan-week .pw-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--mute); letter-spacing: 0.1em; }
+  .plan-week .pw-name {
+    font-family: -apple-system, "PingFang SC", system-ui, sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin: 4px 0 12px;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .plan-week .pw-name::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 3px;
+    background: var(--accent);
+    margin-bottom: 6px;
+  }
+  .plan-week ul {
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .plan-week ul li {
+    margin: 6px 0;
+    padding-left: 12px;
+    position: relative;
+  }
+  .plan-week ul li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .plan-week ul li strong { color: var(--ink); font-weight: 600; }
+
+  /* Pull quote */
+  .pullquote {
+    font-family: -apple-system, "PingFang SC", system-ui, sans-serif;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.32;
+    color: var(--ink);
+    padding: 0 0 0 24px;
+    margin: 48px 0;
+    border-left: 3px solid var(--accent);
+    max-width: 760px;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .pullquote em { font-family: 'Newsreader', serif; font-style: italic; color: var(--accent); font-weight: 500; }
+  .pullquote .src { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mute); margin-top: 16px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+
+  /* Footer */
+  footer.foot {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 56px 0;
+    margin-top: 64px;
+  }
+  footer.foot h2 { font-family: -apple-system, "PingFang SC", system-ui, sans-serif; font-size: 26px; font-weight: 600; margin: 16px 0 14px; color: var(--bg); letter-spacing: -0.01em; }
+  footer.foot .kicker { color: var(--accent-soft); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+  footer.foot p { color: rgba(250,247,240,0.7); font-size: 14px; line-height: 1.6; max-width: 720px; }
+  footer.foot .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 32px; }
+  footer.foot .grid h3 { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-soft); margin: 0 0 8px; }
+  footer.foot .grid p { font-size: 13px; color: rgba(250,247,240,0.6); }
+  footer.foot .copyright { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(250,247,240,0.4); margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(250,247,240,0.1); }
+
+  /* Tooltip */
+  .tip {
+    position: fixed;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.12s;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .tip.show { opacity: 1; }
+  .tip .v { color: var(--accent-soft); font-weight: 500; }
+  .tip .d { color: rgba(250,247,240,0.7); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 1100px) {
+    .calendar-wrap { grid-template-columns: 1fr; }
+    .side { position: static; max-height: none; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .hero-stat { border-bottom: 1px solid var(--hair); }
+    .tldr-grid, .hooks-grid, .phases-detail { grid-template-columns: 1fr; }
+    .tldr-item, .hook-card, .phase-block { border-right: 0; border-bottom: 1px solid var(--hair); }
+    .plays { grid-template-columns: 1fr; }
+    .plan-grid { grid-template-columns: repeat(2, 1fr); }
+    .insights { grid-template-columns: 1fr; }
+    .top-grid { grid-template-columns: 1fr; }
+    .topbar nav { display: none; }
+    .heatmap-row, .heatmap-axis-days { grid-template-columns: 70px repeat(31, minmax(14px,1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="dot"></span>
+      <span>Solvely Social Field Notes</span>
+      <span class="sub">· Vol. 01 / 02</span>
+    </div>
+    <nav>
+      <a href="#calendar">日历热力图</a>
+      <a href="#phases">五阶段</a>
+      <a href="#top10">爆款</a>
+      <a href="#themes">主题</a>
+      <a href="#playbook">Playbook</a>
+      <a href="#plan">90 天计划</a>
+    </nav>
+    <div class="meta">2026·05·20 · Internal</div>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<div class="wrap">
+  <div class="hero">
+    <h1>把 <em>275 条 Kimi 推文</em> 摊开看 — 给 Solvely LinkedIn 找参考。</h1>
+    <p class="lede">点击下方日历的任意一格，看那一天 Kimi 发了什么、拿到多少互动。颜色越深，那一天的曝光越爆。先扫一眼整张图，再读每一节的拆解。</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">275</div><div class="lbl">Tweets 拆解</div></div>
+      <div class="hero-stat"><div class="num">16 mo</div><div class="lbl">2025·01 → 2026·05</div></div>
+      <div class="hero-stat"><div class="num accent">169 k</div><div class="lbl">从 0 涨到 169k 粉</div></div>
+      <div class="hero-stat"><div class="num">52 m+</div><div class="lbl">累计曝光</div></div>
+      <div class="hero-stat"><div class="num accent">20,348</div><div class="lbl">单条最高赞</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============ CALENDAR HEATMAP ============ -->
+<section id="calendar" class="section-bordered">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">§ 01 — Visualized Timeline</div>
+      <h2>从 <em>2025-01-10</em> 到 <em>2026-05-20</em> 的 503 天 · 互动热度图</h2>
+      <p class="desc">每个小方块是一天。颜色越深 = 当天最高赞越多。<strong>点击有色方块</strong>看那天发了什么。右边 5 个色条 = 起号五阶段。试着先点深色那几格 — 那是分水岭事件。</p>
+    </div>
+
+    <div class="cal-tools">
+      <span class="chip active" data-filter="all">全部 <span class="ct" id="ct-all">275</span></span>
+      <span class="chip" data-filter="release">模型发布 <span class="ct" id="ct-release"></span></span>
+      <span class="chip" data-filter="research">论文/研究 <span class="ct" id="ct-research"></span></span>
+      <span class="chip" data-filter="agent">Agent/产品 <span class="ct" id="ct-agent"></span></span>
+      <span class="chip" data-filter="benchmark">Benchmark <span class="ct" id="ct-benchmark"></span></span>
+      <span class="chip" data-filter="partnership">合作/借势 <span class="ct" id="ct-partnership"></span></span>
+      <span class="chip" data-filter="promo">促销 <span class="ct" id="ct-promo"></span></span>
+      <span class="chip" data-filter="viral">仅高互动 ≥1000 赞</span>
+      <span class="chip" data-filter="media">含图/视频</span>
+    </div>
+
+    <div class="calendar-wrap">
+      <div class="heatmap" id="heatmap">
+        <!-- inserted by JS -->
+      </div>
+
+      <div class="side">
+        <div class="panel">
+          <div class="panel-title">色阶 · 当日最高赞</div>
+          <div class="legend-rows" id="legend">
+            <div class="legend-row"><span class="sw" style="background:var(--h0)"></span><span>无推文 / 不在范围</span><span class="ct">0</span></div>
+            <div class="legend-row"><span class="sw" style="background:var(--h1)"></span><span>1 — 100</span><span class="ct"></span></div>
+            <div class="legend-row"><span class="sw" style="background:var(--h2)"></span><span>100 — 500</span><span class="ct"></span></div>
+            <div class="legend-row"><span class="sw" style="background:var(--h3)"></span><span>500 — 1,500</span><span class="ct"></span></div>
+            <div class="legend-row"><span class="sw" style="background:var(--h4)"></span><span>1,500 — 5,000</span><span class="ct"></span></div>
+            <div class="legend-row"><span class="sw" style="background:var(--h5)"></span><span>5,000 — 15,000</span><span class="ct"></span></div>
+            <div class="legend-row"><span class="sw" style="background:var(--h6)"></span><span>15,000+</span><span class="ct"></span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">起号五阶段</div>
+          <div class="phase-rows">
+            <div class="phase-row" data-p="1"><div class="bar"></div><div class="name">Dormancy<span class="dates">2024·12 — 2025·01</span></div><div class="marker">i</div></div>
+            <div class="phase-row" data-p="2"><div class="bar"></div><div class="name">Ignition<span class="dates">2025·01 — 2025·02</span></div><div class="marker">ii</div></div>
+            <div class="phase-row" data-p="3"><div class="bar"></div><div class="name">Quiet<span class="dates">2025·03 — 2025·06</span></div><div class="marker">iii</div></div>
+            <div class="phase-row" data-p="4"><div class="bar"></div><div class="name">Breakout<span class="dates">2025·07 — 2025·12</span></div><div class="marker">iv</div></div>
+            <div class="phase-row" data-p="5"><div class="bar"></div><div class="name">Cadence<span class="dates">2026·01 — now</span></div><div class="marker">v</div></div>
+          </div>
+        </div>
+
+        <div class="panel" id="tweet-detail">
+          <div class="panel-title">推文详情 <span style="float:right;color:var(--mute);font-weight:400;font-family:-apple-system,sans-serif;text-transform:none;letter-spacing:0;font-size:11px;">点击日历方块</span></div>
+          <div class="tweet-panel-empty">
+            <div class="icon">∅</div>
+            <div>尚未选择日期</div>
+            <div style="font-size:11.5px;margin-top:4px;color:var(--mute-soft);">把鼠标移到任一有色方块上 ↑</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insights">
+      <div class="insight">
+        <div class="label">凭直觉先看</div>
+        <div class="body">左半部分（2025-01 到 2025-06）几乎都是浅色 — <strong>每月只有 1-2 个亮点</strong>。右半部分（2025-11 之后）肉眼可见的密度跳级。</div>
+      </div>
+      <div class="insight">
+        <div class="label">最深的几格</div>
+        <div class="body">2026-03-20（Cursor 借势，20K 赞）、2026-04-20（K2.6 发布，18K 赞）、2026-01-27（K2.5 发布，15K 赞）— 这 3 天就贡献了全期 18% 的曝光。</div>
+      </div>
+      <div class="insight">
+        <div class="label">沉默期不可怕</div>
+        <div class="body">2025-03 到 2025-06 一片浅色 — 这不是失败，是<strong>留白</strong>。Kimi 没有强行用 motivation/感悟填充。这是值得 Solvely 学的纪律。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ TL;DR ============ -->
+<section class="section-bordered">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">§ 02 — Executive Summary</div>
+      <h2>如果只看 <em>五件事</em>。</h2>
+      <p class="desc">下面 5 条结论从 275 条推文中归纳，每一条都对应日历上一段可见的现象。</p>
+    </div>
+    <div class="tldr-grid">
+      <div class="tldr-item">
+        <div class="n">i.</div>
+        <div class="h">起号靠产品发布炸，不是预热攒粉。</div>
+        <div class="b">第一条推 44 个赞。第十天 Kimi k1.5 — 1,608 赞，36 倍跳跃。</div>
+      </div>
+      <div class="tldr-item">
+        <div class="n">ii.</div>
+        <div class="h">最爆款不是自夸，是借势夸友商。</div>
+        <div class="b">「Congrats to <span class="mono">@cursor_ai</span>」拿了 20,348 赞，超越任何自家 K2.6 发布。</div>
+      </div>
+      <div class="tldr-item">
+        <div class="n">iii.</div>
+        <div class="h">Meet · Hello · Introducing 三大开场白。</div>
+        <div class="b">「Hello, Kimi」均赞 8,146；「Meet Kimi」均赞 4,668；「Introducing」均赞 4,156。</div>
+      </div>
+      <div class="tldr-item">
+        <div class="n">iv.</div>
+        <div class="h">带媒体的推平均互动是纯文字的 <em>2.4 倍</em>。</div>
+        <div class="b">无媒体均赞 884；带图均赞 2,169；带视频均赞 2,160。</div>
+      </div>
+      <div class="tldr-item">
+        <div class="n">v.</div>
+        <div class="h">促销 ROI 垫底，研究内容 ROI 第二高。</div>
+        <div class="b">促销均赞 1,025。论文/研究均赞 3,497 — 是促销的 3.4 倍。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ PHASES DETAIL ============ -->
+<section id="phases" class="section-bordered">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">§ 03 — Five Phases</div>
+      <h2>起号 <em>五阶段</em>详解。</h2>
+      <p class="desc">不是线性增长，是台阶式跳跃。每一级台阶都对应一次产品发布。这意味着<strong>内容节奏要服务于产品节奏</strong>，反过来不行。</p>
+    </div>
+
+    <div class="phases-detail">
+      <div class="phase-block" data-p="1">
+        <div class="dates">PHASE 01 · 2024·12 — 2025·01</div>
+        <div class="stage">Dormancy</div>
+        <div class="summary">注册账号，但 <strong>38 天</strong>不发一条。没有"Hello World"，没有提前预热。</div>
+        <div class="data">
+          <div class="k">Tweets</div><div class="v">0</div>
+          <div class="k">Avg likes</div><div class="v">—</div>
+          <div class="k">课</div><div class="v">空账号 ≠ 失败账号</div>
+        </div>
+      </div>
+      <div class="phase-block" data-p="2">
+        <div class="dates">PHASE 02 · 2025·01 — 2025·02</div>
+        <div class="stage">Ignition</div>
+        <div class="summary">k1.5 一发布，10 天内 44 赞跳到 1,608 赞。同月 3 个爆款。</div>
+        <div class="data">
+          <div class="k">Tweets / mo</div><div class="v">7</div>
+          <div class="k">Avg likes</div><div class="v">801</div>
+          <div class="k">Peak</div><div class="v">1,858 (Muon)</div>
+        </div>
+      </div>
+      <div class="phase-block" data-p="3">
+        <div class="dates">PHASE 03 · 2025·03 — 2025·06</div>
+        <div class="stage">Quiet</div>
+        <div class="summary">4 个月沉默期，没有 meme、感悟、节日填充。<strong>敢不发</strong>。</div>
+        <div class="data">
+          <div class="k">Tweets / mo</div><div class="v">2.3</div>
+          <div class="k">Avg likes</div><div class="v">~ 690</div>
+          <div class="k">课</div><div class="v">保留可信度预算</div>
+        </div>
+      </div>
+      <div class="phase-block" data-p="4">
+        <div class="dates">PHASE 04 · 2025·07 — 2025·12</div>
+        <div class="stage">Breakout</div>
+        <div class="summary">K2 开源 — 单条 6,626 赞，账号从此换轨道。月推从 1 跳到 16。</div>
+        <div class="data">
+          <div class="k">Tweets / mo</div><div class="v">11.2</div>
+          <div class="k">Avg likes</div><div class="v">1,058</div>
+          <div class="k">Peak</div><div class="v">9,667 (K2 Thinking)</div>
+        </div>
+      </div>
+      <div class="phase-block" data-p="5">
+        <div class="dates">PHASE 05 · 2026·01 — now</div>
+        <div class="stage">Cadence</div>
+        <div class="summary">高频运营。每 2 周一次"产品级事件"，期间填充论文、benchmark、合作。</div>
+        <div class="data">
+          <div class="k">Tweets / mo</div><div class="v">18-21</div>
+          <div class="k">Avg likes</div><div class="v">2,397</div>
+          <div class="k">Peak</div><div class="v">20,348 (Cursor)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ TOP TWEETS ============ -->
+<section id="top10" class="section-bordered">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">§ 04 — Top 10 Hits</div>
+      <h2>Top 10 爆款 — <em>每一条都是什么类型</em>。</h2>
+      <p class="desc">按赞数排序的全期前 10。点击卡片，会跳到日历那一天看上下文。注意 No.1 不是自家发布，是借势夸友商。</p>
+    </div>
+    <div class="top-grid" id="top-grid">
+      <!-- inserted by JS -->
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ THEMES ============ -->
+<section id="themes" class="section-bordered">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">§ 05 — Content Themes</div>
+      <h2>内容主题 <em>ROI 排行榜</em>。</h2>
+      <p class="desc">每条原创推文按关键词归类。横条 = 单条平均互动量（不是总量）。<strong>促销垫底，研究第二高</strong> — 这是反直觉但值得抄的发现。</p>
+    </div>
+    <div class="theme-bars">
+      <div class="theme-bar"><div class="name">模型发布<span class="sub">Meet / Hello / Introducing Kimi K___</span></div><div class="barwrap"><div class="barfill" style="width:100%;"></div></div><div class="count">17 条</div><div class="avg">6,559</div></div>
+      <div class="theme-bar"><div class="name">论文 · 技术深挖<span class="sub">Muon / MoBA / Attention Residuals</span></div><div class="barwrap"><div class="barfill" style="width:53%;"></div></div><div class="count">46 条</div><div class="avg">3,497</div></div>
+      <div class="theme-bar"><div class="name">Agent · 产品<span class="sub">Kimi Code / Claw / Agent Swarm</span></div><div class="barwrap"><div class="barfill" style="width:52%;"></div></div><div class="count">37 条</div><div class="avg">3,413</div></div>
+      <div class="theme-bar"><div class="name">长上下文<span class="sub">128k / 256k / 1M tokens</span></div><div class="barwrap"><div class="barfill" style="width:50%;"></div></div><div class="count">11 条</div><div class="avg">3,313</div></div>
+      <div class="theme-bar"><div class="name">Benchmark · 榜单<span class="sub">#1 on OpenRouter / SWE-Bench / HLE</span></div><div class="barwrap"><div class="barfill" style="width:48%;"></div></div><div class="count">30 条</div><div class="avg">3,158</div></div>
+      <div class="theme-bar"><div class="name">用例 · Demo<span class="sub">"From one prompt..." + 截屏</span></div><div class="barwrap"><div class="barfill" style="width:47%;"></div></div><div class="count">30 条</div><div class="avg">3,087</div></div>
+      <div class="theme-bar"><div class="name">社区回应<span class="sub">Thanks to / Congrats to</span></div><div class="barwrap"><div class="barfill" style="width:46%;"></div></div><div class="count">11 条</div><div class="avg">3,000</div></div>
+      <div class="theme-bar"><div class="name">活动 · 演讲<span class="sub">GTC / 创始人露脸</span></div><div class="barwrap"><div class="barfill muted" style="width:37%;"></div></div><div class="count">6 条</div><div class="avg">2,446</div></div>
+      <div class="theme-bar"><div class="name">合作伙伴公告<span class="sub">"Now live in ___"</span></div><div class="barwrap"><div class="barfill muted" style="width:20%;"></div></div><div class="count">10 条</div><div class="avg">1,300</div></div>
+      <div class="theme-bar"><div class="name">促销 · 充值返利<span class="sub">"20% bonus for $100..."</span></div><div class="barwrap"><div class="barfill muted" style="width:16%;"></div></div><div class="count">12 条</div><div class="avg">1,025</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ HOOKS ============ -->
+<section class="section-bordered">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">§ 06 — The Three Hooks</div>
+      <h2>三个钩子，<em>包揽 80%</em> 的高互动。</h2>
+      <p class="desc">把所有原创推文的第一句话归类，发现高互动几乎都来自 3 个开场白。这是品牌口吻最值得复用的一层 — <strong>每次产品发布都能复用</strong>。</p>
+    </div>
+    <div class="hooks-grid">
+      <div class="hook-card">
+        <div class="label">№ 01 · 最高互动</div>
+        <div class="name">Hello, Kimi ___</div>
+        <div class="num">8,146<span class="u">avg likes</span></div>
+        <div class="meta">2 USES · MAX 9,667 · MIN 6,626</div>
+        <div class="ex">"🚀 Hello, Kimi K2! Open-Source Agentic Model!" — 保留给最重大的开源版本发布</div>
+      </div>
+      <div class="hook-card">
+        <div class="label">№ 02</div>
+        <div class="name">Meet Kimi ___</div>
+        <div class="num">4,668<span class="u">avg likes</span></div>
+        <div class="meta">7 USES · MAX 18,154 · MIN 282</div>
+        <div class="ex">"Meet Kimi K2.6: Advancing Open-Source Coding" — 一般产品发布的默认款</div>
+      </div>
+      <div class="hook-card">
+        <div class="label">№ 03</div>
+        <div class="name">Introducing ___</div>
+        <div class="num">4,156<span class="u">avg likes</span></div>
+        <div class="meta">5 USES · MAX 13,539 · MIN 1,036</div>
+        <div class="ex">"Introducing 𝑨𝒕𝒕𝒆𝒏𝒕𝒊𝒐𝒏 𝑹𝒆𝒔𝒊𝒅𝒖𝒂𝒍𝒔" — 论文/研究的固定开场</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:40px;font-size:15px;font-weight:600;color:var(--ink-soft);">那些不太管用的开场</h3>
+    <div class="hooks-grid">
+      <div class="hook-card muted">
+        <div class="label">⌀ Below avg</div>
+        <div class="name">We're #1 ___</div>
+        <div class="num">1,314<span class="u">avg likes</span></div>
+        <div class="meta">10 USES · 太自夸 · 容易疲劳</div>
+        <div class="ex">"We're the #1 open model in Vision and Document Arena!"</div>
+      </div>
+      <div class="hook-card muted">
+        <div class="label">⌀ Below avg</div>
+        <div class="name">🎁 Reward / Promo</div>
+        <div class="num">1,199<span class="u">avg likes</span></div>
+        <div class="meta">3 USES · 受众错位</div>
+        <div class="ex">"🎁 Here's a new limited-time top-up reward..."</div>
+      </div>
+      <div class="hook-card muted">
+        <div class="label">⌀ Below avg</div>
+        <div class="name">Thanks ___</div>
+        <div class="num">621<span class="u">avg likes</span></div>
+        <div class="meta">3 USES · 无信息量</div>
+        <div class="ex">"Thanks Elon, impressive work from SpaceX..."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ PLAYBOOK ============ -->
+<section id="playbook" class="section-bordered" style="background: var(--surface);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">§ 07 — Solvely Playbook</div>
+      <h2>十条<em>给 Solvely 的</em>具体打法。</h2>
+      <p class="desc">从 Kimi 拆出来、可以平移到 Solvely LinkedIn 的策略。每一条都标了：根据是什么、第一周怎么落地。</p>
+    </div>
+
+    <div class="plays">
+      <div class="play">
+        <div class="play-num">i.</div>
+        <div class="play-title">把 LinkedIn 当"产品 PR 通道"，不当"内容池"</div>
+        <div class="play-take">起号靠产品发布炸，不是预热攒粉。</div>
+        <div class="play-body">Kimi 没花一周时间发"我们是谁""我们的愿景"。第一条就是产品。<strong>每一次大版本/大功能/大用例</strong>当作 LinkedIn 上的"小型发布会"，剩下内容服务于这个发布节奏。</div>
+        <div class="play-tactic"><span class="lab">第一周</span>挑 1 个 Solvely 今年最大的功能/合作/数据，写一条 "Introducing Solvely [X]" 试发。</div>
+      </div>
+
+      <div class="play">
+        <div class="play-num">ii.</div>
+        <div class="play-title">建立 "Meet / Hello / Introducing" 三级口令</div>
+        <div class="play-take">同样的开场白 = 粉丝形成"看到这词就知道有大新闻"的条件反射。</div>
+        <div class="play-body">Kimi 把"Hello, Kimi"留给最重大开源发布，"Meet Kimi"用于次重大产品，"Introducing"用于研究。Solvely 可以建立："Introducing Solvely ___" / "Now live: ___" / "Behind ___"。<strong>一致性高于创意</strong>。</div>
+        <div class="play-tactic"><span class="lab">第一周</span>写一个 4 行的"内部品牌词典"，对应 3 级发布。固定 6 个月不改。</div>
+      </div>
+
+      <div class="play">
+        <div class="play-num">iii.</div>
+        <div class="play-title">每条发布推都要有 <em>对比数字</em></div>
+        <div class="play-take">"o1-level"、"+550% over GPT-4o"、"#1 on OpenRouter" — 数字 + 友商 = 算法燃料。</div>
+        <div class="play-body">Kimi k1.5 第一条爆款用了 "+550% over GPT-4o on AIME"。这不是数据炫耀 — 是<strong>给传播一个 hook</strong>，给转发者一个能截图的句子。</div>
+        <div class="play-tactic"><span class="lab">每条发布</span>必带 1 个具体数字 + 1 个友商对比（"比 Photomath 多覆盖 X 学科"）。</div>
+      </div>
+
+      <div class="play">
+        <div class="play-num">iv.</div>
+        <div class="play-title">借势夸友商 — 天花板比自夸高 <em>10 倍</em></div>
+        <div class="play-take">「Congrats to @cursor_ai」是历史 No.1 爆款（20,348 赞）。</div>
+        <div class="play-body">当 Photomath / Chegg / Quizlet / 多邻国 任何相邻产品做了大动作，<strong>第一时间发祝贺</strong>，在祝贺里植入 Solvely 的关联（"我们也在做相似方向"）。要点：<strong>真诚 + 内容关联 + 不踩竞品</strong>。</div>
+        <div class="play-tactic"><span class="lab">机制</span>建一个"友商动态监控清单"。任何同领域大新闻 24 小时内有动作。</div>
+      </div>
+
+      <div class="play">
+        <div class="play-num">v.</div>
+        <div class="play-title">允许沉默期。<em>不要为了发而发</em></div>
+        <div class="play-take">2025 年 3-6 月 Kimi 平均月发 2.3 条 — 没有任何 meme / 感悟 / 节日水推。</div>
+        <div class="play-body">大多数公司账号一旦开就停不下来。Kimi 不这么干。<strong>没大新闻就少发或不发</strong>，节省的是品牌"可信度预算"。一个每天发 motivation 的账号，下次发新版本没人当回事。</div>
+        <div class="play-tactic"><span class="lab">机制</span>规定每周<strong>最多 3 条</strong>，留出"沉默档期"。Quality &gt; Quantity 写进 KPI。</div>
+      </div>
+
+      <div class="play">
+        <div class="play-num">vi.</div>
+        <div class="play-title">研究内容是<em>最高 ROI 的填充物</em></div>
+        <div class="play-take">论文/技术深挖均赞 3,497 — 仅次于模型发布。</div>
+        <div class="play-body">Solvely 不是研究公司，但<strong>有研究内容可发</strong>：用户错题分布、学科准确率提升、模型迭代日志、AI 教育方法论。<strong>不要包装成营销洞察</strong> — 像研究员写报告那样诚恳地写。</div>
+        <div class="play-tactic"><span class="lab">每月</span>出 1 篇"Behind Solvely / Inside Solvely"系列技术深度文，每篇带 1 张数据图。</div>
+      </div>
+
+      <div class="play">
+        <div class="play-num">vii.</div>
+        <div class="play-title">让创始人/技术负责人在<em>关键节点</em>露脸</div>
+        <div class="play-take">杨植麟 K2.5 发布视频拿 9,475 赞 — 全期 No.6。</div>
+        <div class="play-body">不需要做 vlog，不需要日常出镜。但<strong>每次大发布</strong>加一条 30-60 秒的创始人视频（哪怕只是说"我们今天发布 X"），互动会显著抬升。LinkedIn 上更明显 — 决策者期待看到"是谁在做这件事"。</div>
+        <div class="play-tactic"><span class="lab">每次发布</span>CEO / 产品负责人录 60 秒"Why we built X"，配字幕。</div>
+      </div>
+
+      <div class="play">
+        <div class="play-num">viii.</div>
+        <div class="play-title">把每条推文写成<em>三段式</em></div>
+        <div class="play-take">一句话定位 + 数字对比 + 技术 bullet — Kimi 所有爆款的统一结构。</div>
+        <div class="play-body">看 Kimi K2 发布："Hello, Kimi K2! Open-Source Agentic Model!" → "1T total / 32B active MoE / SOTA on SWE Bench" → "API / weights / github". <strong>每段独立可截图、可转发、可作为引用</strong>。</div>
+        <div class="play-tactic"><span class="lab">所有发布</span>强制三段：[价值主张] · [数字证据] · [行动路径]。</div>
+      </div>
+
+      <div class="play">
+        <div class="play-num">ix.</div>
+        <div class="play-title">区分受众：拉新 vs 留存，<em>别用同一把尺子</em></div>
+        <div class="play-take">Kimi 促销均赞 1,025 — 是发布的 1/6。但他们继续发，因为受众是已购买用户。</div>
+        <div class="play-body">Solvely 的"会员折扣""推荐有奖"这类内容，<strong>不要和"功能发布"比互动数</strong>。把内容分两桶看 KPI：<strong>拉新桶</strong>（看新粉/印象数）vs <strong>留存桶</strong>（看点击转化）。</div>
+        <div class="play-tactic"><span class="lab">报表</span>月报分两栏：[Visibility — followers / impressions] vs [Conversion — clicks / signups]。</div>
+      </div>
+
+      <div class="play">
+        <div class="play-num">x.</div>
+        <div class="play-title">建立"开源/技术诚实"的<em>叙事资产</em></div>
+        <div class="play-take">Mooncake → FlashKDA → FrontierCS — Kimi 每 1-2 个月开源一个"非核心"技术资产。</div>
+        <div class="play-body">这些都不是商业产品，但每一个都能给主账号带来一个发推的理由 + 行业开发者的认同。Solvely 可以做同类事：开源一个学科识别数据集、LaTeX 解析库、学习路径推荐算法的 baseline。<strong>廉价的"信任投资"</strong>。</div>
+        <div class="play-tactic"><span class="lab">每季度</span>挑 1 个内部工具/数据集开源到 GitHub。配套 LinkedIn 长推说明背景。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 90 DAY PLAN ============ -->
+<section id="plan" class="section-bordered">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">§ 08 — 90-Day Plan</div>
+      <h2>Solvely LinkedIn 的 <em>90 天</em>起号计划。</h2>
+      <p class="desc">把上面 10 条 playbook 落到 12 周。<strong>不是激进版（每天发），是 Kimi 那种"敢沉默"的节奏</strong> — 平均一周 2-3 条，但每条都是经过设计的。</p>
+    </div>
+
+    <div class="plan-grid">
+      <div class="plan-week">
+        <div class="pw-num">W 01 · 02</div>
+        <div class="pw-name">基建</div>
+        <ul>
+          <li><strong>定品牌口令</strong>（3 级发布词）</li>
+          <li><strong>建友商监控清单</strong>（8-10 个账号）</li>
+          <li><strong>梳理研究资产清单</strong>，列 6 个题目</li>
+          <li><strong>不发任何推文</strong>，准备库存</li>
+        </ul>
+      </div>
+      <div class="plan-week">
+        <div class="pw-num">W 03 · 04</div>
+        <div class="pw-name">点火</div>
+        <ul>
+          <li><strong>第 1 条</strong>：Introducing Solvely [核心能力]</li>
+          <li><strong>第 2 条</strong>：用户故事，引言 + 数字</li>
+          <li><strong>第 3 条</strong>：Behind Solvely 系列第 1 篇</li>
+          <li><strong>互动监控</strong>，建立 baseline</li>
+        </ul>
+      </div>
+      <div class="plan-week">
+        <div class="pw-num">W 05 · 06</div>
+        <div class="pw-name">扩面</div>
+        <ul>
+          <li><strong>合作/借势 1 次</strong>：等友商大新闻 24h 内响应</li>
+          <li><strong>研究内容 1-2 篇</strong>：数据驱动的 Insight</li>
+          <li><strong>评估</strong>：哪个钩子起作用，哪些不起</li>
+        </ul>
+      </div>
+      <div class="plan-week">
+        <div class="pw-num">W 07 · 08</div>
+        <div class="pw-name">大事件</div>
+        <ul>
+          <li><strong>组织一次大发布</strong>：新学科/新模型/新合作</li>
+          <li><strong>创始人露脸</strong>：60-90 秒视频</li>
+          <li><strong>三段式正文</strong> + 数据图 + Demo 链接</li>
+          <li><strong>预先 3-5 个内部转发评论</strong></li>
+        </ul>
+      </div>
+      <div class="plan-week">
+        <div class="pw-num">W 09 · 10</div>
+        <div class="pw-name">收割长尾</div>
+        <ul>
+          <li><strong>大事件复盘内容</strong>：反馈 + 媒体 + 数据</li>
+          <li><strong>合作伙伴公告</strong>（如有）</li>
+          <li><strong>沉默 5-7 天</strong>让内容沉淀</li>
+        </ul>
+      </div>
+      <div class="plan-week">
+        <div class="pw-num">W 11 · 12</div>
+        <div class="pw-name">复盘 + 下轮</div>
+        <ul>
+          <li><strong>季度复盘</strong>：Top 3 / Bottom 3 模式</li>
+          <li><strong>开源行动</strong>：1 个内部小工具到 GitHub</li>
+          <li><strong>规划 Q2 的 2 个大事件</strong></li>
+          <li><strong>分桶 KPI 评估</strong>，不混看</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pullquote">
+      Quality &gt; Quantity 不是口号，是 <em>纪律</em> — 因为每条不爆的推文都在消耗下次发推的可信度预算。
+      <span class="src">Solvely Social Desk · 内部备忘</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="kicker">Appendix · Methodology</div>
+    <h2>方法论 · 局限 · 下一步</h2>
+    <p>报告基于公开抓取的 @Kimi_Moonshot X 时间线（user-timeline 接口 12 页 + 历史搜索 4 页）。数据采集 2026-05-20。覆盖 2025-01-10 至 2026-05-20 共 275 条独立推文，约占该账号总 status 数（368 条）的 75%；其余 25% 主要是更早期的回复，对主结论无影响。</p>
+
+    <div class="grid">
+      <div>
+        <h3>数据局限</h3>
+        <p>X API 返回的 views 是当前累计值。对比时优先看 likes 而非 views，比例更稳定。</p>
+      </div>
+      <div>
+        <h3>归因边界</h3>
+        <p>把 Kimi 的成功归因于"内容策略"过于简化 — 模型质量、开源带来的长尾流量、X 上 AI 圈的算法偏好都是放大器。Solvely 复制策略不会复制结果。</p>
+      </div>
+      <div>
+        <h3>下一步建议</h3>
+        <p>(1) 把这份分析 + 90 天计划同步给产品 / 工程负责人，配合产出"发布事件"。(2) 同样方法可拆 Photomath / Khan Academy。</p>
+      </div>
+    </div>
+
+    <div class="copyright">
+      Solvely · Social Field Notes · Vol. 01 — Issue 02 · 2026-05-20<br>
+      Prepared in-house. Numbers verified against raw API responses. Not distributed externally.
+    </div>
+  </div>
+</footer>
+
+
+<div class="tip" id="tip"></div>
+
+
+<script>
+// ====================== DATA ======================
+const TWEETS = [{"id":"2057005904776868040","date":"2026-05-20","type":"RT","theme":"rt","hook":null,"text":"RT @cerebras: Cerebras is now running Kimi K2.6 – a trillion parameter model – in enterprise trials. \n\nAt ~1,000 tokens/s, this is the fast…","likes":0,"rts":266,"replies":0,"views":0,"photo":false,"video":false},{"id":"2056589294656225540","date":"2026-05-19","type":"RT","theme":"rt","hook":null,"text":"RT @cursor_ai: Composer 2.5 is built on the same open-source base as Composer 2, Moonshot’s Kimi K2.5. https://t.co/i0zbjf3AY2","likes":0,"rts":56,"replies":0,"views":24,"photo":true,"video":false},{"id":"2054918374837322140","date":"2026-05-14","type":"POST","theme":"agent","hook":"meet","text":"Meet Kimi Web Bridge - Kimi's browser extension.\n\nAgent can now interact with websites like a human: search, scroll, click, type and complete tasks.\n\nSupports Kimi Code CLI, Claude Code, Cursor, Codex, Hermes, and more.\n\nAvailable now on https://t.co/j08CjeY8NO and the Chrome Web Store.","likes":2244,"rts":244,"replies":110,"views":220221,"photo":false,"video":true},{"id":"2054803169994272819","date":"2026-05-14","type":"POST","theme":"benchmark","hook":"rank1","text":"Kimi K2.6 is now open-weight #1 on Finance Agent Benchmark V2.","likes":862,"rts":59,"replies":29,"views":69416,"photo":false,"video":false},{"id":"2054918390104678742","date":"2026-05-14","type":"REPLY","theme":"reply","hook":null,"text":"Supports Kimi Code CLI, Claude Code, Cursor, Codex, Hermes, and more.\n\nTry it at: https://t.co/sUqDpi0HQr and the Chrome Web Store.","likes":89,"rts":13,"replies":6,"views":63151,"photo":false,"video":false},{"id":"2054918387550368132","date":"2026-05-14","type":"REPLY","theme":"reply","hook":null,"text":"Your AI agent can create an entire Google Form for you by chatting, and it will use the browser to type and build the survey automatically. https://t.co/58XSjq32E2","likes":49,"rts":2,"replies":2,"views":9023,"photo":false,"video":true},{"id":"2054803939414122817","date":"2026-05-14","type":"RT","theme":"rt","hook":null,"text":"RT @NousResearch: Kimi track - First place: JumpFoundry by @evvaaannnn \n\nA Hermes Agent plugin where the designer hand-draws one or two gly…","likes":0,"rts":27,"replies":0,"views":4,"photo":false,"video":false},{"id":"2054419869849055681","date":"2026-05-13","type":"RT","theme":"rt","hook":null,"text":"RT @MangQiuyang: We integrated FrontierCS into Harbor and are releasing a preview long-horizon agent leaderboard (up to 835 turns, ~200K ou…","likes":0,"rts":20,"replies":0,"views":1,"photo":false,"video":false},{"id":"2051899631907590385","date":"2026-05-06","type":"RT","theme":"rt","hook":null,"text":"RT @vercel_dev: AI Gateway lets you route to any model.\n\nOn May 13 in SF, we're hosting a builder night powered by those models. Pick one,…","likes":0,"rts":12,"replies":0,"views":0,"photo":false,"video":false},{"id":"2051986596636057981","date":"2026-05-06","type":"RT","theme":"rt","hook":null,"text":"RT @sarahmsachs: DeepSeek v4 works fine, but it’s not the frontier-pressing moment we saw with Kimi 2.6. On Notion eval data, it’s similar…","likes":0,"rts":32,"replies":0,"views":3,"photo":false,"video":false},{"id":"2049382893919850621","date":"2026-04-29","type":"RT","theme":"rt","hook":null,"text":"RT @ValsAI: Results on the remainder of our benchmarks are in for Kimi K2.6, the new #1 open-weight model on the Vals Index (#8 overall)\n\nK…","likes":0,"rts":17,"replies":0,"views":10,"photo":false,"video":false},{"id":"2048693682329776223","date":"2026-04-27","type":"POST","theme":"benchmark","hook":"rank1","text":"Kimi K2.6 is now #1 on OpenRouter's weekly LLM Leaderboard 🏆  \n\nA huge thank you to every developer building with Kimi. We'll keep our heads down and keep shipping.","likes":2434,"rts":150,"replies":124,"views":131620,"photo":true,"video":false},{"id":"2048645054571688123","date":"2026-04-27","type":"POST","theme":"benchmark","hook":"reward","text":"🎁 Here's a new limited-time top-up reward. \nGrab bonus vouchers and keep exploring Kimi K2.6.  \n\n🔹20% bonus for $100 – $299   \n\n🔹25% bonus for $300 – $999 \n\n🔹30% bonus for $1,000+    \n\nEnds May 3.   \n\n🔗Details:https://t.co/HLRaFecpoN https://t.co/TVo1yL7TQ2","likes":211,"rts":12,"replies":22,"views":27959,"photo":true,"video":false},{"id":"2047543386153140231","date":"2026-04-24","type":"POST","theme":"other","hook":"rank1","text":"We're the #1 open model in Vision and Document Arena!","likes":1124,"rts":61,"replies":20,"views":61704,"photo":false,"video":false},{"id":"2047554254517456907","date":"2026-04-24","type":"RT","theme":"rt","hook":null,"text":"RT @anything: Kimi K2.6 is now live inside Anything! https://t.co/LEQ3ZtXQK8","likes":0,"rts":11,"replies":0,"views":1,"photo":true,"video":false},{"id":"2047190578493096122","date":"2026-04-23","type":"POST","theme":"release","hook":"meet","text":"Meet Kimi K2.6 Agent Swarm 👋\n\nHighlights： \n🔹 Swarms, elevated - 300 parallel sub-agents × 4,000 steps per run (up from 100 / 1,500 in K2.5). \n\n🔹 Outputs are real files, not chat - one run delivers 100+ files, 100,000-word literature reviews, or 20,000-row datasets. \n\n 🔹Heterogeneous skills - search, analysis, coding, long-form writing, and visual generation all running in parallel\n\n🔗Try it at: https://t.co/2Tu8McUaUa","likes":3722,"rts":326,"replies":105,"views":606088,"photo":false,"video":true},{"id":"2047156995195846972","date":"2026-04-23","type":"POST","theme":"benchmark","hook":null,"text":"We're the top open-weights model on Design Arena!","likes":934,"rts":37,"replies":31,"views":39011,"photo":false,"video":false},{"id":"2047190597870702781","date":"2026-04-23","type":"REPLY","theme":"reply","hook":null,"text":"🔹 One Prompt → 100-page PDF report +cited dataset + 30-page executive PPT + 20 financial charts https://t.co/p9Ug2FkHYO","likes":81,"rts":2,"replies":1,"views":16540,"photo":false,"video":true},{"id":"2047190601360347304","date":"2026-04-23","type":"REPLY","theme":"reply","hook":null,"text":"🔗Try it at:\n https://t.co/2Tu8McUaUa","likes":68,"rts":3,"replies":1,"views":14374,"photo":true,"video":false},{"id":"2047139607012356548","date":"2026-04-23","type":"RT","theme":"rt","hook":null,"text":"RT @NousResearch: Kimi K2.6 is free on Nous Portal for the next 24 hours\n\nMade possible by @vercel's AI Gateway &amp; @Kimi_Moonshot  \n\nRun 'he…","likes":0,"rts":152,"replies":0,"views":4,"photo":false,"video":false},{"id":"2047147773292937497","date":"2026-04-23","type":"RT","theme":"rt","hook":null,"text":"RT @badlogicgames: been working with @Kimi_Moonshot K2.6 for the past 2 hours \"accidentially\" and ... it's really good!","likes":0,"rts":21,"replies":0,"views":2,"photo":false,"video":false},{"id":"2047311312196448425","date":"2026-04-23","type":"RT","theme":"rt","hook":null,"text":"RT @j_dekoninck: Kimi K2.6 becomes the #1 open model on MathArena! https://t.co/0WTQDU18l9","likes":0,"rts":10,"replies":0,"views":8,"photo":true,"video":false},{"id":"2046915283206709581","date":"2026-04-22","type":"POST","theme":"benchmark","hook":"rank1","text":"Kimi K2.6 is now ranked #1 on OpenRouter's programming leaderboard. https://t.co/zQbP55HMZs","likes":3362,"rts":182,"replies":90,"views":337180,"photo":true,"video":false},{"id":"2046816911229661682","date":"2026-04-22","type":"RT","theme":"rt","hook":null,"text":"RT @NotionHQ: ICYMI: Kimi K2.6 is now in Notion.\n\nIt’s the first open-weight model that plays like other top-tier models. It’s strong at to…","likes":0,"rts":25,"replies":0,"views":3,"photo":false,"video":false},{"id":"2046901882724184275","date":"2026-04-22","type":"RT","theme":"rt","hook":null,"text":"RT @dhh: I've been a K2.5 superfan since it came out. These new numbers for the next version look incredible. You gotta love competition!","likes":0,"rts":70,"replies":0,"views":5,"photo":false,"video":false},{"id":"2046911674574385347","date":"2026-04-22","type":"RT","theme":"rt","hook":null,"text":"RT @omarsar0: We are entering an extremely exciting era for open-weight models.\n\nKimi K2.6 now feels like a top agentic model.\n\nI took it f…","likes":0,"rts":32,"replies":0,"views":7,"photo":false,"video":false},{"id":"2046498140224966944","date":"2026-04-21","type":"POST","theme":"research","hook":"reward","text":"📢 Kimi K2.6 API is live\n\n• Input Price (Cache Hit): $0.16 / M tokens \n• Input Price (Cache Miss): $0.95 / M tokens \n• Output: $4.00 / M tokens  \n\nKimi K2.6 is our latest + most intelligent model - stronger long-horizon coding, better instruction following & self-correction.   \n\nNative multimodal (text/image/video), thinking + non-thinking, 256K context. Supports tool calls, JSON / Partial mode, and web search.  \n\nTry it → https://t.co/XCrgjXAqMw","likes":3210,"rts":196,"replies":83,"views":765302,"photo":true,"video":false},{"id":"2046607915424034839","date":"2026-04-21","type":"POST","theme":"research","hook":null,"text":"We're open-sourcing FlashKDA — our high-performance CUTLASS-based implementation of Kimi Delta Attention kernels. Achieves 1.72×–2.22× prefill speedup over the flash-linear-attention baseline on H20, and works as a drop-in backend for flash-linear-attention. \n\nExplore on github: https://t.co/sf4UohXDWY","likes":1813,"rts":185,"replies":46,"views":211773,"photo":false,"video":false},{"id":"2046531052957569211","date":"2026-04-21","type":"POST","theme":"research","hook":null,"text":"Kimi K2.6 demonstrates strong long-horizon coding in complex engineering tasks:\n\nKimi K2.6 successfully downloaded and deployed the Qwen3.5-0.8B model locally on a Mac. By implementing and optimizing model inference in Zig—a highly niche programming language—it demonstrated exceptional out-of-distribution generalization. \n\nAcross 4,000+ tool calls, over 12 hours of continuous execution, and 14 iterations, Kimi K2.6 dramatically improved throughput from ~15 to ~193 tokens/sec, ultimately achieving speeds ~20% faster than LM Studio.","likes":1186,"rts":95,"replies":40,"views":80813,"photo":true,"video":false},{"id":"2046441531192840328","date":"2026-04-21","type":"POST","theme":"benchmark","hook":null,"text":"Kimi is the current open-source SOTA on Artificial Analysis","likes":903,"rts":45,"replies":28,"views":45208,"photo":false,"video":false},{"id":"2046451397827477761","date":"2026-04-21","type":"POST","theme":"release","hook":null,"text":"We are excited to have @FireworksAI_HQ as a day 0 launch partner for Kimi K2.6!  \n\nTheir inference and fine-tuning platform is fast, reliable, and scales well under real production load, making it easy to get K2.6 into your users' hands today. Already trusted by enterprises and startups around the world!  \n\nTry it out at: https://t.co/InG7kVvLoy","likes":448,"rts":21,"replies":12,"views":34494,"photo":false,"video":false},{"id":"2046531057147933137","date":"2026-04-21","type":"REPLY","theme":"reply","hook":null,"text":"Kimi K2.6 autonomously overhauled exchange-core, an 8-year-old open-source financial matching engine. \n\nOver a 13-hour execution, the model iterated through 12 optimization strategies, initiating over 1,000 tool calls to precisely modify more than 4,000 lines of code. Acting as an expert systems architect, Kimi K2.6 analyzed CPU and allocation flame graphs to pinpoint hidden bottlenecks and boldly reconfigured the core thread topology (from 4ME+2RE to 2ME+1RE). \n\nDespite the engine already operating near its performance limits, Kimi K2.6 extracted a 185% medium throughput leap (from 0.43 to 1.24 MT/s) and a 133% performance throughput gain (soaring from 1.23 to 2.86 MT/s).","likes":159,"rts":5,"replies":1,"views":14747,"photo":true,"video":false},{"id":"2046432339585274006","date":"2026-04-21","type":"RT","theme":"rt","hook":null,"text":"RT @ValsAI: Kimi K2.6 has captured #1 on the open-weight Vals Index, and is #7 overall. https://t.co/ZZISAwYSov","likes":0,"rts":36,"replies":0,"views":12,"photo":true,"video":false},{"id":"2046499035998277861","date":"2026-04-21","type":"RT","theme":"rt","hook":null,"text":"RT @_TobiasLee: Kimi K2.6 @Kimi_Moonshot is the new leading open-weights agent model, landing at #4 on Claw-Eval (Pass^3: 62.3%).\n\nKey take…","likes":0,"rts":12,"replies":0,"views":4,"photo":false,"video":false},{"id":"2046516899669057997","date":"2026-04-21","type":"RT","theme":"rt","hook":null,"text":"RT @qoder_ai_ide: @Kimi_Moonshot Kimi-K2.6 just dropped in Qoder.\n\nSOTA coding · Long-horizon execution · Agent swarms\n\nAt 0.3x credits. ht…","likes":0,"rts":4,"replies":0,"views":3,"photo":false,"video":false},{"id":"2046249571882500354","date":"2026-04-20","type":"PIN","theme":"release","hook":"meet","text":"Meet Kimi K2.6: Advancing Open-Source Coding\n\n🔹Open-source SOTA on HLE w/ tools (54.0), SWE-Bench Pro (58.6), SWE-bench Multilingual (76.7), BrowseComp (83.2), Toolathlon (50.0), Charxiv w/ python(86.7), Math Vision w/ python (93.2)\n\nWhat's new:\n🔹Long-horizon coding  - 4,000+ tool calls, over 12 hours of continuous execution, with generalization across languages (Rust, Go, Python) and tasks (frontend, devops, perf optimization).\n🔹Motion-rich frontend - Videos in hero sections, WebGL shaders, GSAP + Framer Motion, Three.js 3D.\n🔹Agent Swarms, elevated - 300 parallel sub-agents × 4,000 steps per run (up from K2.5's 100 / 1,500). One prompt, 100+ files. \n🔹Proactive Agents - K2.6 model powers OpenClaw, Hermes Agent, etc for 24/7 autonomous ops.  \n🔹Claw Groups (research preview) - bring your own agents, command your friends', bots & humans in the loop.\n-\nK2.6 is now live on https://t.co/YutVbwktG0 in chat mode and agent mode. \nFor production-grade coding, pair K2.6 with Kimi Code: https://t.co/uvoSJKyGCY\n- \n🔗 API: https://t.co/EOZkbOwCN4\n🔗 Tech blog: https://t.co/9wWvgIQSS3\n🔗 Weights & code: https://t.co/Be0hjs2RTP","likes":18154,"rts":2406,"replies":931,"views":7465452,"photo":true,"video":false},{"id":"2046265960383033825","date":"2026-04-20","type":"POST","theme":"release","hook":"meet","text":"Meet Kimi K2.6 agent - Video hero section, WebGL shaders, real backends. From one prompt.\n\n🔹 Video hero sections - cinematic aesthetic, auto-composited \n🔹 WebGL shader animations - native GLSL / WGSL, liquid metal, caustics, raymarching \n🔹 Motion design - GSAP + Framer Motion \n🔹 Backend database: Kimi wires up auth + database + backend in one pass. \n🔹 Website stack - React 19 + TypeScript + Vite + Tailwind + shadcn/ui \n🔹 3D w/ physically-based lighting - Three.js + React Three Fiber","likes":4905,"rts":418,"replies":105,"views":383887,"photo":false,"video":true},{"id":"2046272319191150749","date":"2026-04-20","type":"POST","theme":"release","hook":null,"text":"We are excited to have @baseten as a day 0 launch partner for Kimi K2.6!\n\nTheir inference stack brings KV-aware routing, NVFP4 on Blackwell, multi-modal hierarchical caching, and prefill-decode disaggregation, so K2.6 runs the way it's meant to in production.\n\nTry it out at: https://t.co/ol3lIkaH6m","likes":929,"rts":41,"replies":13,"views":99303,"photo":false,"video":false},{"id":"2046265981333549433","date":"2026-04-20","type":"REPLY","theme":"reply","hook":null,"text":"Sheer fabric with light transmission. Cloth physics that responds to wind. Depth-of-field compositing. Physically-based lighting - all rendered live in the browser. https://t.co/JwmalU4FQj","likes":118,"rts":5,"replies":0,"views":13155,"photo":false,"video":true},{"id":"2046265978024231067","date":"2026-04-20","type":"REPLY","theme":"reply","hook":null,"text":"Kimi wires up auth + database + backend in one pass\nOne prompt gets you user registration, login, database, booking systems, admin dashboards - wired up and deployed.\nNo separate \"now build the backend\" step. https://t.co/mTmfQp7r46","likes":91,"rts":0,"replies":2,"views":13776,"photo":true,"video":false},{"id":"2046288745134190888","date":"2026-04-20","type":"RT","theme":"rt","hook":null,"text":"RT @opencode: Kimi K2.6 now in OpenCode — Go included","likes":0,"rts":182,"replies":0,"views":13,"photo":false,"video":false},{"id":"2045461663898599472","date":"2026-04-18","type":"POST","theme":"other","hook":null,"text":"We push Prefill/Decode disaggregation beyond a single cluster: cross-datacenter + heterogeneous hardware, unlocking the potential for significantly lower cost per token.\n\nThis was previously blocked by KV cache transfer overhead. The key enabler is our hybrid model (Kimi Linear), which reduces KV cache size and makes cross-DC PD practical.\n\nValidated on a 20x scaled-up Kimi Linear model:\n✅ 1.54× throughput \n✅ 64% ↓ P90 TTFT \n→ Directly translating into lower token cost.\n\nMore in Prefill-as-a-Service: https://t.co/If8fA3t9Og","likes":2845,"rts":343,"replies":74,"views":685614,"photo":true,"video":false},{"id":"2045342163534528723","date":"2026-04-18","type":"POST","theme":"other","hook":null,"text":"We don't know what Kimi + Hermes agents will look like in the wild yet. That's why we built the hackathon.\n\nPresented by @Kimi_Moonshot &amp; @NousResearch. Come find out with us.","likes":843,"rts":49,"replies":33,"views":99183,"photo":false,"video":false},{"id":"2040079034290409692","date":"2026-04-03","type":"POST","theme":"other","hook":null,"text":"https://t.co/CCSaYHQJ2O","likes":1116,"rts":75,"replies":28,"views":126300,"photo":false,"video":false},{"id":"2039731620438241403","date":"2026-04-02","type":"POST","theme":"other","hook":null,"text":"Come introduce yourself to the team, we have your slippers ready.\n\nReach out at:  talent@moonshot.ai","likes":1357,"rts":26,"replies":60,"views":172505,"photo":false,"video":false},{"id":"2037010118957817988","date":"2026-03-26","type":"POST","theme":"research","hook":null,"text":"Zhilin at GTC: Introducing Attention Residuals\n\nLearning selective memory, rather than mechanically accumulating everything, is the beauty of attention.\n\nMany of you have probably read Attention Is All You Need, the 2017 Transformer paper that brought “human-like” attention into the model’s field of view. From that point on, models no longer simply read everything in a mechanical way. Instead, they began to develop a sense of what matters more and what matters less across the text, choosing to retain the more important information.\n\nRecently, Kimi applied this idea of attention to the temporal dimension, then rotated it 90 degrees into the model’s depth dimension. This allows the model to have attention not only over time, but also throughout the process of information transmission across layers—giving it a more intelligent way to understand and process information.","likes":1457,"rts":155,"replies":50,"views":114556,"photo":false,"video":true},{"id":"2035971296165802198","date":"2026-03-23","type":"POST","theme":"benchmark","hook":null,"text":"We've migrated our API payments to @Stripe for better tax support & auto-invoicing!\n\n> Invoices are now auto-generated and downloadable anytime from your dashboard.\n\nYour first top-up on the new system may ask you to re-enter your card details. That's a one-time security handshake, takes 30 seconds.","likes":529,"rts":20,"replies":25,"views":44941,"photo":true,"video":false},{"id":"2035972869629567317","date":"2026-03-23","type":"REPLY","theme":"reply","hook":null,"text":"🔗Get started at:\nhttps://t.co/KoM28Y8L8j","likes":33,"rts":0,"replies":1,"views":16524,"photo":false,"video":false},{"id":"2035074972943831491","date":"2026-03-20","type":"POST","theme":"release","hook":"congrats","text":"Congrats to the @cursor_ai team on the launch of Composer 2!   \n\nWe are proud to see Kimi-k2.5 provide the foundation. Seeing our model integrated effectively through Cursor's continued pretraining & high-compute RL training is the open model ecosystem we love to support.  \n\nNote: Cursor accesses Kimi-k2.5 via @FireworksAI_HQ ' hosted RL and inference platform as part of an authorized commercial partnership.","likes":20348,"rts":1390,"replies":517,"views":3524606,"photo":false,"video":false},{"id":"2035011542115393973","date":"2026-03-20","type":"POST","theme":"event","hook":null,"text":"Zhilin's full GTC 2026 keynote is here. \n\nIf you're curious about the \"how\" behind scaling Kimi’s latest models, this is the session you can't miss. :) https://t.co/rRgPzau6e5","likes":1103,"rts":142,"replies":32,"views":140611,"photo":false,"video":true},{"id":"2034149953036292293","date":"2026-03-18","type":"RT","theme":"rt","hook":null,"text":"RT @mvansegb: Per Moonshot AI CEO Zhilin Yang at GTC today, this is the \"most beautiful image\" he's ever seen. 📉\n\nMade possible by NVIDIA H…","likes":0,"rts":39,"replies":0,"views":6,"photo":false,"video":false},{"id":"2033796781327454686","date":"2026-03-17","type":"POST","theme":"other","hook":null,"text":"📎We've uploaded it to arXiv, enjoy!\nhttps://t.co/Hyk8ahw8Tc","likes":3160,"rts":296,"replies":61,"views":210759,"photo":true,"video":false},{"id":"2033378587878072424","date":"2026-03-16","type":"POST","theme":"research","hook":"introducing","text":"Introducing 𝑨𝒕𝒕𝒆𝒏𝒕𝒊𝒐𝒏 𝑹𝒆𝒔𝒊𝒅𝒖𝒂𝒍𝒔: Rethinking depth-wise aggregation.\n\nResidual connections have long relied on fixed, uniform accumulation. Inspired by the duality of time and depth, we introduce Attention Residuals, replacing standard depth-wise recurrence with learned, input-dependent attention over preceding layers.\n\n🔹 Enables networks to selectively retrieve past representations, naturally mitigating dilution and hidden-state growth.\n🔹 Introduces Block AttnRes, partitioning layers into compressed blocks to make cross-layer attention practical at scale.\n🔹 Serves as an efficient drop-in replacement, demonstrating a 1.25x compute advantage with negligible (<2%) inference latency overhead.\n🔹 Validated on the Kimi Linear architecture (48B total, 3B activated parameters), delivering consistent downstream performance gains.\n\n🔗Full report:\nhttps://t.co/u3EHICG05h","likes":13539,"rts":2066,"replies":336,"views":5048949,"photo":true,"video":false},{"id":"2033553883927372129","date":"2026-03-16","type":"POST","theme":"community","hook":"thanks","text":"Thanks for the reminder 🕚","likes":490,"rts":12,"replies":13,"views":51346,"photo":false,"video":false},{"id":"2033378596438556853","date":"2026-03-16","type":"REPLY","theme":"reply","hook":null,"text":"Analysis of training dynamics demonstrates how AttnRes naturally mitigates hidden-state magnitude growth and yields a more uniform gradient distribution across depth. https://t.co/sgMdZ03WBd","likes":467,"rts":23,"replies":7,"views":97385,"photo":true,"video":false},{"id":"2033378599450079581","date":"2026-03-16","type":"REPLY","theme":"reply","hook":null,"text":"For more details, check out our paper here: https://t.co/K047S2MCHo","likes":431,"rts":23,"replies":10,"views":83475,"photo":false,"video":false},{"id":"2033535435679670533","date":"2026-03-16","type":"RT","theme":"rt","hook":null,"text":"RT @elonmusk: @_avichawla Impressive work from Kimi","likes":0,"rts":175,"replies":0,"views":12,"photo":false,"video":false},{"id":"2032311970704277737","date":"2026-03-13","type":"POST","theme":"other","hook":null,"text":"🤗","likes":684,"rts":24,"replies":21,"views":94668,"photo":false,"video":false},{"id":"2031914794257965396","date":"2026-03-12","type":"POST","theme":"other","hook":null,"text":"See you at #NVIDIAGTC 2026!","likes":263,"rts":16,"replies":11,"views":28873,"photo":false,"video":false},{"id":"2031639523395027293","date":"2026-03-11","type":"RT","theme":"rt","hook":null,"text":"RT @dhh: Kimi K2.5 continues to be my daily driver for all the basic stuff where I don't need PhD-level intelligence. I just need it done q…","likes":0,"rts":122,"replies":0,"views":6,"photo":false,"video":false},{"id":"2031303324746789344","date":"2026-03-10","type":"POST","theme":"benchmark","hook":null,"text":"Kimi is in the Top 50 Gen AI Web Products. \n\nKeep building, keep shipping.💪 https://t.co/Ar96iax1LP","likes":832,"rts":50,"replies":49,"views":98602,"photo":true,"video":false},{"id":"2031318389495574583","date":"2026-03-10","type":"RT","theme":"rt","hook":null,"text":"RT @cz_binance: Tried many AI models with OpenClaw, I found Kimi AI to be the most token efficient, good at coding, also the easiest to set…","likes":0,"rts":707,"replies":0,"views":11,"photo":false,"video":false},{"id":"2028368415224955015","date":"2026-03-02","type":"POST","theme":"other","hook":null,"text":"🌖 New Kimi Doodle drop: The Dark Side of the Moon's 53rd anniversary\n\nGo drop the needle and spin it!\n\nFun fact: Kimi was actually founded on the album's 50th anniversary 🎵\n\nCheck it out 👉 https://t.co/8PH4O9dh6m https://t.co/130PXrbFut","likes":548,"rts":38,"replies":38,"views":35300,"photo":false,"video":true},{"id":"2028394635148906549","date":"2026-03-02","type":"POST","theme":"benchmark","hook":"reward","text":"🎁 We've added a limited-time top-up reward to help you get the most out of @openclaw. Grab some bonus vouchers and keep exploring.\n\n🔹20% bonus for $100 – $299  \n🔹30% bonus for $300 – $999\n🔹40% bonus for $1,000+  \n\nEnds Mar 8.   \n\n🔹Details:🔗https://t.co/W728SbUxuQ https://t.co/4EzDjdjTZW","likes":177,"rts":9,"replies":25,"views":26428,"photo":true,"video":false},{"id":"2027724048537632993","date":"2026-02-28","type":"POST","theme":"other","hook":null,"text":"Good news: the Kimi Code 3X Quota Boost is here to stay.\nNo expiration. No catch. Just 3 times the power, permanently.\nFrom quick fixes to full-scale production, there's a plan for every need.\nGo build something amazing. https://t.co/1LuklqB7ZB","likes":1567,"rts":93,"replies":103,"views":154657,"photo":true,"video":false},{"id":"2027724052203438131","date":"2026-02-28","type":"REPLY","theme":"reply","hook":null,"text":"&gt; Try it now at: https://t.co/hFIZqvNHRz","likes":54,"rts":4,"replies":8,"views":19199,"photo":false,"video":false},{"id":"2027289811770544532","date":"2026-02-27","type":"POST","theme":"other","hook":null,"text":"High performance and low cost are all you need. https://t.co/O3UXugEucE","likes":944,"rts":34,"replies":44,"views":58453,"photo":true,"video":false},{"id":"2027294554387575126","date":"2026-02-27","type":"POST","theme":"other","hook":null,"text":"Happy Shipping. 🪄","likes":336,"rts":18,"replies":12,"views":35533,"photo":false,"video":false},{"id":"2026920450186711232","date":"2026-02-26","type":"POST","theme":"research","hook":null,"text":"Supporting @MITEECS and @nlp_mit’s Multimodal Machine Learning course (Spring 2026). \n\n🎓 Students are leveraging the multimodal capabilities of Kimi K2.5 to power their final research projects. \n\nWe look forward to seeing the innovative applications that will emerge this semester. 🔗 https://t.co/qj78CsQ9r1 \n\nHappy coding! ✨","likes":720,"rts":65,"replies":21,"views":51921,"photo":true,"video":false},{"id":"2025539982195335198","date":"2026-02-22","type":"POST","theme":"other","hook":null,"text":"“hardwired kimi k2.5 into his prefrontal cortex” 😂 https://t.co/jFsmbsRJE6","likes":987,"rts":38,"replies":30,"views":52837,"photo":true,"video":false},{"id":"2023029679611904256","date":"2026-02-15","type":"REPLY","theme":"reply","hook":null,"text":"> Beta Access: Now open for Allegretto members and above.\n> Try it now at: https://t.co/1SP1vhv46T","likes":487,"rts":23,"replies":23,"views":148794,"photo":true,"video":false},{"id":"2023042887769071747","date":"2026-02-15","type":"REPLY","theme":"reply","hook":null,"text":"Here is the official playbook ⬇️\nhttps://t.co/mx4lB0TRMs https://t.co/f0JQmhhyAo","likes":347,"rts":17,"replies":25,"views":106891,"photo":true,"video":false},{"id":"2022109533716533612","date":"2026-02-13","type":"POST","theme":"research","hook":null,"text":"\"Mooncake originated from a research collaboration between Kimi(Moonshot AI) and Tsinghua University. It was born from the need to solve the 'memory wall' in serving massive-scale models like Kimi K-Series. Since open-sourcing, it has evolved into a thriving community-driven project.\"\n\nGitHub: https://t.co/0Zzt6L2lIU","likes":813,"rts":58,"replies":20,"views":73125,"photo":false,"video":false},{"id":"2022298690640114089","date":"2026-02-13","type":"POST","theme":"demo","hook":null,"text":"We're seeing incredible agents work with Kimi K2.5, from OpenClaw to complex agent swarm.\nAnd we heard you: for heavy agent use, the lower tiers hit their limits too fast.\nMeet Allegro. Same Kimi K2.5 that powers every tier: 1T params, native multimodal. No model held back by plan level.\nBuild more, wait less. Let the agents run.","likes":761,"rts":24,"replies":35,"views":67633,"photo":true,"video":false},{"id":"2022298693811273781","date":"2026-02-13","type":"REPLY","theme":"reply","hook":null,"text":"Start building: https://t.co/rNXJCLSDBG","likes":65,"rts":1,"replies":6,"views":20707,"photo":false,"video":false},{"id":"2021141949416362381","date":"2026-02-10","type":"POST","theme":"research","hook":null,"text":"Kimi Agent Swarm blog is here 🐝  \nhttps://t.co/q4OQ25xOTt\n\nKimi can spawn a team of specialists to:\n\n- Scale output: multi-file generation (Word, Excel, PDFs, slides)  \n- Scale research: parallel analysis of news from 2000–2025  \n- Scale creativity: a book in 20 writing styles in parallel\n\nContext windows fill up and reasoning degrades. Kimi Agent Swarm breaks this structural limit: 100 sub-agents, 1500 tool calls, and 4.5× faster than sequential execution.","likes":1369,"rts":114,"replies":56,"views":133811,"photo":true,"video":false},{"id":"2020761643152794038","date":"2026-02-09","type":"RT","theme":"rt","hook":null,"text":"RT @qoder_ai_ide: Kimi K2.5 is now live on Qoder.\n\nIt's the #1 model on OpenRouter right now, and we've got it in AI Chat at  0.3x Credit…","likes":0,"rts":13,"replies":0,"views":0,"photo":false,"video":false},{"id":"2020423716698730607","date":"2026-02-08","type":"RT","theme":"rt","hook":null,"text":"RT @openrouter: Kimi K2.5 is now the most popular model on OpenRouter https://t.co/kftInjEt8u","likes":0,"rts":166,"replies":0,"views":0,"photo":true,"video":false},{"id":"2019693554835263852","date":"2026-02-06","type":"POST","theme":"other","hook":null,"text":"Kimi k 2.5 ranks #2 🥳","likes":752,"rts":34,"replies":28,"views":44960,"photo":false,"video":false},{"id":"2019295025746870389","date":"2026-02-05","type":"POST","theme":"benchmark","hook":"rank1","text":"Kimi is currently the #1 on LLM Leaderboard (via OpenRouter)\nThis marks our first time topping the all-time usage charts, a huge milestone for the team. A massive thank you to every developer and user who made this possible. 🫡 https://t.co/BHTH5gl6Ly","likes":1309,"rts":73,"replies":83,"views":77756,"photo":true,"video":false},{"id":"2019289819348910262","date":"2026-02-05","type":"RT","theme":"rt","hook":null,"text":"RT @KimiProduct: https://t.co/eckpBt7A6X","likes":0,"rts":285,"replies":0,"views":6,"photo":false,"video":false},{"id":"2018941851445997897","date":"2026-02-04","type":"POST","theme":"benchmark","hook":"rank1","text":"Kimi is now the #1 used model on OpenClaw (via OpenRouter) 🏆\nReal usage data doesn't lie. Developers are voting with their tokens. https://t.co/z6sk5fMvWZ","likes":2166,"rts":124,"replies":96,"views":301269,"photo":true,"video":false},{"id":"2018977959894491452","date":"2026-02-04","type":"POST","theme":"demo","hook":null,"text":"Proud to support @stanfordnlp CS224N this year. 🌲\n\nStudents are building their final projects using the Kimi K2.5 API. \n\nWe can’t wait to see what this next generation of NLP researchers creates by the March 16 poster session. https://t.co/Zcfy84dYIW\n\nEnjoy building with Kimi 💫 https://t.co/JYMlTJQbR5","likes":414,"rts":34,"replies":21,"views":66981,"photo":true,"video":false},{"id":"2018843599560151514","date":"2026-02-04","type":"POST","theme":"other","hook":null,"text":"🌘","likes":355,"rts":5,"replies":12,"views":25228,"photo":false,"video":false},{"id":"2019019291287486494","date":"2026-02-04","type":"POST","theme":"benchmark","hook":null,"text":"The Kimi K2.5 Top-Up Bonus (Round 2) is here! 🥳\nWe're offering tiered voucher bonuses for all single top-ups over $200. \n\n🔹 20% bonus for $200 – $499\n\n🔹 25% bonus for $500 – $1,999\n\n🔹 30% bonus for $2,000+\n\nEnds Feb 13. \n\n🔗Details:\nhttps://t.co/W728SbUxuQ https://t.co/yGh6iK0E0V","likes":169,"rts":7,"replies":9,"views":24677,"photo":true,"video":false},{"id":"2019035118418206819","date":"2026-02-04","type":"RT","theme":"rt","hook":null,"text":"RT @arena: 🚨 Top 10 Open Models in January: Text Arena\n\nLooking back last month, here are the rankings by provider for January:\n\n🥇 #1 Kimi-…","likes":0,"rts":69,"replies":0,"views":0,"photo":false,"video":false},{"id":"2018697552456257945","date":"2026-02-03","type":"POST","theme":"benchmark","hook":null,"text":"We're introducing WorldVQA, a new benchmark to measure atomic vision-centric world knowledge in Multimodal Large Language Models. \n\nCurrent evaluations often conflate visual knowledge retrieval with reasoning. In contrast, WorldVQA decouples these capabilities to strictly measure \"what the model memorizes.\" \n\nThe benchmark consists of 3,500 VQA pairs across 9 categories, with careful attention to linguistic and cultural diversity: https://t.co/E47QzHbC1a","likes":845,"rts":96,"replies":32,"views":76294,"photo":true,"video":false},{"id":"2018499894080930186","date":"2026-02-03","type":"POST","theme":"other","hook":null,"text":"love it too.","likes":361,"rts":7,"replies":10,"views":27909,"photo":false,"video":false},{"id":"2018524219316056457","date":"2026-02-03","type":"RT","theme":"rt","hook":null,"text":"RT @zxytim: Remember, this is the worst model we will have in the future","likes":0,"rts":21,"replies":0,"views":0,"photo":false,"video":false},{"id":"2017820175853310199","date":"2026-02-01","type":"POST","theme":"demo","hook":null,"text":"Here’s how to connect Kimi K2.5 to OpenClaw🦞: https://t.co/EdyffQZ3Fs","likes":1428,"rts":101,"replies":36,"views":161648,"photo":false,"video":false},{"id":"2017852449923702825","date":"2026-02-01","type":"POST","theme":"other","hook":null,"text":"🌘","likes":380,"rts":14,"replies":10,"views":33374,"photo":false,"video":false},{"id":"2017249233775260021","date":"2026-01-30","type":"POST","theme":"benchmark","hook":null,"text":"Kimi K2.5 tech report just dropped!\n\nQuick hits:\n- Joint text–vision training: pretrained with 15T vision-text tokens, zero-vision SFT (text-only) to activate visual reasoning\n- Agent Swarm + PARL: dynamically orchestrated parallel sub-agents, up to 4.5× lower latency, 78.4% on BrowseComp\n- MoonViT-3D: a unified image–video encoder with 4× temporal compression, enabling 4× longer videos in the same context\n- Toggle: token-efficient RL, 25–30% fewer tokens with no accuracy drop\n\nHere's our work toward scalable, real-world agentic intelligence. More details in the report 👉https://t.co/N5pwm0M4jm","likes":1901,"rts":281,"replies":53,"views":314564,"photo":true,"video":false},{"id":"2017105020274233358","date":"2026-01-30","type":"POST","theme":"benchmark","hook":null,"text":"Kimi ranks Top 3 on OpenRouter's total usage chart 🚀 and keeps climbing up! https://t.co/EmISBTFYaU","likes":950,"rts":35,"replies":25,"views":49163,"photo":true,"video":false},{"id":"2017292360099762378","date":"2026-01-30","type":"POST","theme":"benchmark","hook":null,"text":"Kimi K2.5: Now Top 1 on the OSWorld leaderboard. 🏆\n\nWith its Computer Use capabilities, you can now build powerful agents that navigate and operate computer interface just like a human.\n\nhttps://t.co/lzS88hOcxt https://t.co/NSqwn3P76W","likes":725,"rts":57,"replies":32,"views":51000,"photo":true,"video":false},{"id":"2017158490930999424","date":"2026-01-30","type":"POST","theme":"other","hook":"rank1","text":"Kimi K2.5 is #1 on Design Arena 🏆","likes":442,"rts":32,"replies":19,"views":31472,"photo":false,"video":false},{"id":"2017105810242011285","date":"2026-01-30","type":"POST","theme":"benchmark","hook":"rank1","text":"Kimi K2.5 become the #1 most-used model on Kilo Code via OpenRouter. 🏆","likes":317,"rts":15,"replies":9,"views":24327,"photo":false,"video":false},{"id":"2017027542914580522","date":"2026-01-30","type":"POST","theme":"other","hook":null,"text":"👀","likes":281,"rts":10,"replies":3,"views":23723,"photo":false,"video":false},{"id":"2016918447951925300","date":"2026-01-29","type":"POST","theme":"partnership","hook":null,"text":"You share, we care.\n\nKimi Code is now powered by our best open coding model, Kimi K2.5\n\n🔹 Permanent Update: Token-Based Billing We’re saying goodbye to request limits. Starting today, we are permanently switching to a Token-Based Billing system. All usage quotas have been reset to give you a fresh start.\n🎉 Limited-Time Event (Ends Feb 28th) To celebrate this upgrade, we are unleashing full power!\n - 3X Quota: Enjoy up to 3 times the usage limits.\n - Full Speed: No throttling. No purchase limits. Just code.\n\nJump in now and build something amazing!","likes":1931,"rts":111,"replies":107,"views":303669,"photo":true,"video":false},{"id":"2016710842654609648","date":"2026-01-29","type":"POST","theme":"agent","hook":null,"text":"Kimi can now create and edit files! \n\nFrom expert-level spreadsheets to professional slides and PDFs, all it takes is a chat. \n\nQuick update: \"OK Computer\" has officially leveled up and is now \"Kimi Agent\". https://t.co/ToDtizCkYi","likes":937,"rts":66,"replies":20,"views":54462,"photo":false,"video":true},{"id":"2016732248800997727","date":"2026-01-29","type":"POST","theme":"other","hook":"rank1","text":"Kimi K2.5 is #1 Open Model in VoxelBench 🏆 https://t.co/ubnrvb43tC","likes":332,"rts":13,"replies":16,"views":21981,"photo":true,"video":false},{"id":"2016918450992812443","date":"2026-01-29","type":"REPLY","theme":"reply","hook":null,"text":"Making your quota go further\n\nNo More Waste: In the old system, a simple \"Hello World\" cost the same quota as refactoring hundreds of lines of code. That’s history.\nPrecision Billing: With Token-based billing, usage is calculated by actual length. Quick queries cost tiny amounts of tokens, saving your budget for the heavy lifting.\nIn Short: Your quota goes further. Every bit of compute is now spent exactly on your actual needs.\n\nTry it out here https://t.co/uo23H1qtu1","likes":180,"rts":5,"replies":12,"views":27823,"photo":false,"video":false},{"id":"2016792413659156530","date":"2026-01-29","type":"RT","theme":"rt","hook":null,"text":"RT @KimiProduct: https://t.co/C3evPg5d2v","likes":0,"rts":362,"replies":0,"views":1,"photo":false,"video":false},{"id":"2016521406906028533","date":"2026-01-28","type":"POST","theme":"agent","hook":"rank1","text":"Kimi K2.5 is #1 Open Model for Coding 🏆","likes":788,"rts":37,"replies":11,"views":55542,"photo":false,"video":false},{"id":"2016473945957155252","date":"2026-01-28","type":"POST","theme":"other","hook":null,"text":"Kimi K2.5 now on Eigent 🤗","likes":186,"rts":13,"replies":11,"views":25453,"photo":false,"video":false},{"id":"2016443435553890419","date":"2026-01-28","type":"POST","theme":"other","hook":null,"text":"Kimi K2.5 AMA on r/LocalLLaMA, don't miss out!","likes":143,"rts":10,"replies":5,"views":45938,"photo":false,"video":false},{"id":"2016544765089902655","date":"2026-01-28","type":"POST","theme":"other","hook":null,"text":"Happening in 5 minutes! Kimi K2.5 AMA on r/LocalLLaMA https://t.co/SCNvNPEmYH","likes":126,"rts":10,"replies":8,"views":21531,"photo":true,"video":false},{"id":"2016356219783676304","date":"2026-01-28","type":"RT","theme":"rt","hook":null,"text":"RT @ArtificialAnlys: Moonshot’s Kimi K2.5 is the new leading open weights model, now closer than ever to the frontier - with only OpenAI, A…","likes":0,"rts":162,"replies":0,"views":4,"photo":false,"video":false},{"id":"2016522451304468940","date":"2026-01-28","type":"RT","theme":"rt","hook":null,"text":"RT @kilocode: Kimi K2.5 is free for a week on Kilo Code. \n\nThis model beats Opus 4.5 on several coding benchmarks. https://t.co/OVY5ebaeXh","likes":0,"rts":113,"replies":0,"views":2,"photo":true,"video":false},{"id":"2016024049869324599","date":"2026-01-27","type":"POST","theme":"release","hook":null,"text":"🥝 Meet Kimi K2.5, Open-Source Visual Agentic Intelligence.\n\n🔹 Global SOTA on Agentic Benchmarks: HLE full set (50.2%), BrowseComp (74.9%)\n🔹 Open-source SOTA on Vision and Coding: MMMU Pro (78.5%), VideoMMMU (86.6%), SWE-bench Verified (76.8%)\n🔹 Code with Taste: turn chats, images & videos into aesthetic websites with expressive motion.\n🔹 Agent Swarm (Beta): self-directed agents working in parallel, at scale. Up to 100 sub-agents, 1,500 tool calls, 4.5× faster compared with single-agent setup.\n-\n🥝 K2.5 is now live on https://t.co/YutVbwktG0 in chat mode and agent mode. \n🥝 K2.5 Agent Swarm in beta for high-tier users.\n🥝 For production-grade coding, you can pair K2.5 with Kimi Code:  https://t.co/A5WQozJF3s\n-\n🔗 API: https://t.co/EOZkbOwCN4\n🔗 Tech blog: https://t.co/6h2KkoA0xd\n🔗 Weights & code: https://t.co/H38KegeDIY","likes":15888,"rts":1987,"replies":777,"views":7340884,"photo":true,"video":false},{"id":"2016065333694771276","date":"2026-01-27","type":"POST","theme":"event","hook":null,"text":"Here's a short video from our founder, Zhilin Yang.\n\n(It's his first time speaking on camera like this, and he really wanted to share Kimi K2.5 with you!) https://t.co/2uDSOjCjly","likes":9475,"rts":849,"replies":232,"views":1682429,"photo":false,"video":true},{"id":"2016021783833673897","date":"2026-01-27","type":"POST","theme":"agent","hook":null,"text":"Kimi K2.5 has arrived! 🥝\nHere are 2 things to know: Aesthetic Coding x Agent Swarm.","likes":6078,"rts":510,"replies":134,"views":616114,"photo":false,"video":true},{"id":"2016034259350520226","date":"2026-01-27","type":"POST","theme":"release","hook":"introducing","text":"Introducing Kimi Code, an open-source coding agent under the Apache 2.0 License.\n\n🔹 Python-based, easy to extend.\n🔹 Fully transparent — clear, safe, reliable.\n🔹 Seamlessly integrates with VS Code, Cursor, JetBrains, Zed, and more.\n🔹 Fully-featured & out-of-the-box ready. Switch over in seconds.\n🔹 Native Multimodal support\n\nExperience it with Kimi K2.5.","likes":2558,"rts":214,"replies":61,"views":257746,"photo":true,"video":false},{"id":"2016114773407236471","date":"2026-01-27","type":"POST","theme":"agent","hook":null,"text":"Kimi K2.5 API: Pro Performance, Accessible Pricing.\n\n🔹 No more choosing between latency and cost\n> K2.5 delivers Turbo-level speed (60-100 tok/s)  as the default.\n> Input pricing is 50% lower than the K2 Turbo, and only 20% the cost of Claude 4.5 Sonnet.\n🔹 Optimized for Drop long Context\nPrice dropped for Cache Hits. Multi-turn agent workflows and long range\nreasoning is more affordable than ever.\n🔹 Quality is the ultimate cost-saver\nWith a higher \"one-shot\" success rate, K2.5 reduces retries and rework. Better quality = lower total operational cost.","likes":1349,"rts":74,"replies":40,"views":169708,"photo":true,"video":false},{"id":"2016082808834531825","date":"2026-01-27","type":"POST","theme":"agent","hook":"introducing","text":"Introducing the Kimi Product account 🥳\n\nKimi Product will share features, use cases, and prompts to help you master Kimi products like Kimi Agent, Kimi Slides and Kimi Code.","likes":1269,"rts":63,"replies":23,"views":151051,"photo":false,"video":false},{"id":"2016057073000448234","date":"2026-01-27","type":"POST","theme":"release","hook":null,"text":"🤗 Fireworks AI is our launch partner for Kimi K2.5. Thanks for the incredibly fast support!","likes":252,"rts":11,"replies":6,"views":33541,"photo":false,"video":false},{"id":"2016114778494964199","date":"2026-01-27","type":"REPLY","theme":"reply","hook":null,"text":"To celebrate the launch of Kimi K2.5, we're kicking off a 7-day Top-up Bonus event!\nGet bonus vouchers credited to your account at 10:00 AM the day after your top-up. (Vouchers are valid for 30 days).\n🔗 Check the full details here: https://t.co/W728SbUxuQ https://t.co/oxiYMEjiZo","likes":162,"rts":7,"replies":7,"views":29790,"photo":true,"video":false},{"id":"2016034272998809678","date":"2026-01-27","type":"REPLY","theme":"reply","hook":null,"text":"One more thing: you can customize your own agent using Kimi Agent SDK\nCheck out: https://t.co/1nV7CJkb4u","likes":129,"rts":10,"replies":5,"views":32171,"photo":false,"video":false},{"id":"2016034270574440903","date":"2026-01-27","type":"REPLY","theme":"reply","hook":null,"text":"During this round of internal model testing, we received a large amount of thoughtful and honest feedback from developers, which has been incredibly helpful to us.\nHuge thanks to @Lakr233 @imwritingbugs @tison1096 @repsiace @y0usali for the valuable insights and support ❤️\nCurious about our upcoming beta? Drop us a line at kimicode@moonshot.ai. We’d love to get to know you better, so feel free to share your GitHub profile if you have one!","likes":99,"rts":2,"replies":2,"views":33881,"photo":false,"video":false},{"id":"2009116264393003029","date":"2026-01-08","type":"POST","theme":"other","hook":null,"text":"Jensen Huang: \"Open models really took off last year.\"\n\nWe're so glad to be part of that. https://t.co/so8FrALxgf","likes":721,"rts":24,"replies":26,"views":57861,"photo":true,"video":false},{"id":"2002213737915441264","date":"2025-12-20","type":"POST","theme":"research","hook":null,"text":"2025: The year the world truly met Kimi.\n\nJan:\n> Kimi K1.5 - Multi-modal reasoning\n>Mooncake - KVCache architecture\n\nFeb:\n> Muon optimizer - Scalable for LLM Training\n> MoBA - long-context technique\n\nJul:\n> Kimi K2 – Trillion-parameter open-source agentic MoE model\n> Turbo mode API - 100 tokens/s\n\nOct:\n> Kimi CLI - With Agent Client Protocol\nNov:\n> Kimi K2 Thinking – Excels in reasoning, agentic search, and coding\nDec:\n> Kimi Linear – Hybrid linear attention architecture\n\nAgent products we shipped:\n\n> Deep Research – Agentic research which is fully visualized\n> OK Computer – Coding agent for knowledge workers\n> Slides – Turn any files to beautiful slides\n\nThank you for an incredible year! As a gift, we've prepared special dropout events for everyone to try our agent features. \n\nHappy early New Year, can't wait for 2026!","likes":811,"rts":56,"replies":40,"views":58431,"photo":false,"video":true},{"id":"2002213877556392108","date":"2025-12-20","type":"REPLY","theme":"reply","hook":null,"text":"Fun fact: Kimi CLI has become Kimi employees' most popular AI tool for programming and document processing. https://t.co/YsTJn1UNoF","likes":82,"rts":6,"replies":1,"views":11430,"photo":true,"video":false},{"id":"2002213858472292813","date":"2025-12-20","type":"REPLY","theme":"reply","hook":null,"text":"OK Computer showcase - Get your own Linktree\n\nhttps://t.co/Up71Nt3tu1","likes":45,"rts":4,"replies":1,"views":13044,"photo":true,"video":false},{"id":"2002058879849672933","date":"2025-12-19","type":"RT","theme":"rt","hook":null,"text":"RT @alexatallah: My personal (non-company) account really went ham on Kimi K2 https://t.co/BavPbA4jRo","likes":0,"rts":3,"replies":0,"views":1,"photo":true,"video":false},{"id":"1999697678561869979","date":"2025-12-13","type":"RT","theme":"rt","hook":null,"text":"RT @miramurati: We're making Tinker generally available with new models and features.","likes":0,"rts":168,"replies":0,"views":1,"photo":false,"video":false},{"id":"1996953835080966390","date":"2025-12-05","type":"POST","theme":"agent","hook":null,"text":"You can now integrate Kimi CLI into JetBrains via the ACP. For details, check out the Kimi CLI GitHub repo: https://t.co/cJrEBiWPZg","likes":170,"rts":12,"replies":6,"views":31281,"photo":false,"video":false},{"id":"1995785397172142165","date":"2025-12-02","type":"POST","theme":"other","hook":null,"text":"Kicking off December with some green checks. ✅\n\nGrab the API and start building: 👉 https://t.co/vC2JN4PrPl","likes":255,"rts":11,"replies":9,"views":31422,"photo":false,"video":false},{"id":"1994353194420547837","date":"2025-11-28","type":"POST","theme":"demo","hook":"meet","text":"Meet Kimi Agentic Slides!\nNow with Nano Banana Pro 🍌\n\n🎁 Thanksgiving Gift: 48H FREE & UNLIMITED ACCESS\n\n🔸 Agentic search (Kimi K2)\n🔸 Files → Slides (PDFs, images, docs+)\n🔸 Fully editable + PPTX export\n🔸 Designer-level visuals (infographics, illustrations)\n\nTry now: https://t.co/skOGijxex8","likes":1449,"rts":173,"replies":71,"views":573795,"photo":false,"video":true},{"id":"1994312119991587256","date":"2025-11-28","type":"POST","theme":"benchmark","hook":null,"text":"🔥Black Friday Deal\n$0.99 for one month of Kimi Pro + Kimi For Coding (Moderato plan, with agentic slides 🍌coming very soon)??\n\n(But only if you can gaslight Kimi.)\n\nTo unlock the lowest price, you need to bargain with Kimi, our very cute (and very stingy) deal guard.\n\nTop bargainers get the monthly plan for $0.99. Basically FREE.\n\nThink you can beat the odds?\nStart your challenge now 👉https://t.co/To8Ycmv5gL\n\n🎁 Extra bonus (For 5 Days): Follow, like, retweet with your bargain chat. Spiciest bargainers get $10 API credits in DMs.","likes":641,"rts":84,"replies":202,"views":360365,"photo":true,"video":false},{"id":"1994353206349168847","date":"2025-11-28","type":"REPLY","theme":"reply","hook":null,"text":"Market Infographic https://t.co/kWRJTP5iCZ","likes":81,"rts":3,"replies":4,"views":18042,"photo":true,"video":false},{"id":"1994353211193340380","date":"2025-11-28","type":"REPLY","theme":"reply","hook":null,"text":"Architectural Schematic https://t.co/U7PW0zOo5Q","likes":63,"rts":1,"replies":1,"views":15569,"photo":true,"video":false},{"id":"1991362671569170564","date":"2025-11-20","type":"POST","theme":"other","hook":"congrats","text":"Congrats 👏🏻","likes":1686,"rts":58,"replies":49,"views":189003,"photo":false,"video":false},{"id":"1991652868521357426","date":"2025-11-20","type":"POST","theme":"other","hook":null,"text":"🤗","likes":863,"rts":34,"replies":12,"views":70775,"photo":false,"video":false},{"id":"1991409529930617093","date":"2025-11-20","type":"POST","theme":"other","hook":null,"text":"While Asynchronous RL is heating up, our algo folks walked in and said: \"Synchronous/On-policy guarantees OR high efficiency? No, we want BOTH.\"  \n\nSo we dropped Seer 😉  \n\nSeer: Online Context Learning for Fast Synchronous LLM Reinforcement Learning. 📄 Read here: https://t.co/riVjUTa0VW","likes":692,"rts":88,"replies":16,"views":53896,"photo":false,"video":false},{"id":"1991139250566545886","date":"2025-11-19","type":"POST","theme":"benchmark","hook":null,"text":"🤗 Kimi-k2-Thinking has reached top performance on the latest IMO-level reasoning benchmark, AMO-Bench from Meituan Longcat!","likes":578,"rts":43,"replies":20,"views":44725,"photo":false,"video":false},{"id":"1990276204218479036","date":"2025-11-17","type":"POST","theme":"promo","hook":null,"text":"To prevent any confusion or potential harm, we officially clarify that @Kimi_Moonshot is the only official Kimi account on Twitter/X, and https://t.co/zrk6zZxZUo is our official website.\n\nAny other accounts/sites that:\n- claim to represent Kimi or Moonshot AI\n- use the same or nearly identical avatars\n- use similar names (including but not limited to “Kimi CLI”, “Kimi_Official”, etc.)\n\nare impersonations and have no affiliation with us.\n\nPlease stay cautious and verify carefully to avoid being misled!\n\n— Kimi by Moonshot AI","likes":667,"rts":47,"replies":23,"views":67197,"photo":false,"video":false},{"id":"1989905247192715640","date":"2025-11-16","type":"POST","theme":"benchmark","hook":null,"text":"This is what we've been telling everyone. 😉\n\nCheck out the Kimi K2 Thinking benchmark best practices and get your API key: https://t.co/fzIanJ26gH","likes":566,"rts":43,"replies":21,"views":150852,"photo":false,"video":false},{"id":"1988260983090147385","date":"2025-11-11","type":"POST","theme":"other","hook":null,"text":"🤗","likes":281,"rts":17,"replies":10,"views":32714,"photo":false,"video":false},{"id":"1988262922888552563","date":"2025-11-11","type":"POST","theme":"other","hook":null,"text":"🤗 Come and join!","likes":186,"rts":7,"replies":6,"views":24317,"photo":false,"video":false},{"id":"1987892275092025635","date":"2025-11-10","type":"POST","theme":"benchmark","hook":"thanks","text":"Thanks everyone for testing Kimi K2 Thinking and sharing benchmark results!\n\nWe've noticed that benchmark outcomes can vary across providers. Some third-party endpoints show substantial accuracy drops (e.g., 20+ pp), which has negatively affected scores on reasoning-heavy tasks like LiveBench.\n\nWe're re-running checks and will share more data soon via the Vendor Verifier (https://t.co/Fzo7OfBe8j) to keep results consistent and transparent.\n\n👉 For reliable benchmark testing, we strongly recommend:\n- Use our official API endpoint kimi-k2-thinking-turbo\n- Enable stream = True\n- Set temperature = 1.0\n- Suggested max_token: Reasoning 128k | Coding 256k | Other ≥64k\n- Add retry logic to your script\n\n👉 For the full benchmark setup guide, check here: https://t.co/fwvad2zJ1s\n\nWe'll continue publishing provider verification results on GitHub. If there are metrics or cases you'd like us to include in the next round, please drop your suggestions in the repo.\n\nAs always, your input helps shape the next iteration.","likes":1027,"rts":77,"replies":33,"views":75392,"photo":false,"video":false},{"id":"1987878751120814383","date":"2025-11-10","type":"POST","theme":"other","hook":null,"text":"🤗","likes":277,"rts":10,"replies":2,"views":31052,"photo":false,"video":false},{"id":"1987916074462114248","date":"2025-11-10","type":"POST","theme":"other","hook":null,"text":"Live now! 🚀 https://t.co/ZzAM0ogatz","likes":128,"rts":6,"replies":3,"views":21889,"photo":false,"video":false},{"id":"1987535678348165201","date":"2025-11-09","type":"POST","theme":"research","hook":null,"text":"Kimi K2 Thinking is here! \nScale up reasoning with more thinking tokens and tool-call steps.  \n\nNow live on https://t.co/YutVbwktG0, the Kimi app, and API.","likes":2055,"rts":210,"replies":53,"views":138264,"photo":false,"video":true},{"id":"1987528042739319105","date":"2025-11-09","type":"REPLY","theme":"reply","hook":null,"text":"Google Play: https://t.co/llag2iLYwF\n\nApp Store: https://t.co/jhjnyuXEiB","likes":41,"rts":4,"replies":5,"views":7007,"photo":false,"video":false},{"id":"1987012044667953611","date":"2025-11-08","type":"RT","theme":"rt","hook":null,"text":"RT @ArtificialAnlys: Kimi K2 Thinking is the new leading open weights model: it demonstrates particular strength in agentic contexts but is…","likes":0,"rts":124,"replies":0,"views":0,"photo":false,"video":false},{"id":"1987090930588090705","date":"2025-11-08","type":"RT","theme":"rt","hook":null,"text":"RT @ClementDelangue: Unsurprisingly, Kimi K2 Thinking is already number one trending on HF. The AI frontier is open-source! https://t.co/n9…","likes":0,"rts":152,"replies":0,"views":0,"photo":false,"video":false},{"id":"1986754111992451337","date":"2025-11-07","type":"POST","theme":"benchmark","hook":null,"text":"Fixed the token generation speed on https://t.co/KoM28Y8L8j & OpenRouter!\n\nShocking plot twist: The bottleneck was IP bandwidth, NOT GPU count 😱 We threw compute at the problem. The answer was thicker pipes, not more cards.\n\nLesson: When serving LLMs, check your network limits before your GPU count 🔥","likes":1150,"rts":67,"replies":39,"views":164160,"photo":false,"video":false},{"id":"1986644557766004804","date":"2025-11-07","type":"RT","theme":"rt","hook":null,"text":"RT @ArtificialAnlys: MoonshotAI has released Kimi K2 Thinking, a new reasoning variant of Kimi K2 that achieves #1 in the Tau2 Bench Teleco…","likes":0,"rts":280,"replies":0,"views":0,"photo":false,"video":false},{"id":"1986838639058497646","date":"2025-11-07","type":"RT","theme":"rt","hook":null,"text":"RT @TheAhmadOsman: join us this Monday on r/LocalLLaMA for an AMA with Moonshot AI, the lab behind the SoTA model Kimi K2 Thinking\n\ni am ge…","likes":0,"rts":13,"replies":0,"views":0,"photo":false,"video":false},{"id":"1986449512538513505","date":"2025-11-06","type":"POST","theme":"release","hook":"hello","text":"🚀 Hello, Kimi K2 Thinking!\nThe Open-Source Thinking Agent Model is here.\n\n🔹 SOTA on HLE (44.9%) and BrowseComp (60.2%)\n🔹 Executes up to 200 – 300 sequential tool calls without human interference\n🔹 Excels in reasoning, agentic search, and coding\n🔹 256K context window\n\nBuilt as a thinking agent, K2 Thinking marks our latest efforts in test-time scaling — scaling both thinking tokens and tool-calling turns.\n\nK2 Thinking is now live on https://t.co/YutVbwktG0 in chat mode, with full agentic mode coming soon. It is also accessible via API.\n\n🔌 API is live: https://t.co/EOZkbOwCN4\n🔗 Tech blog: https://t.co/n7xxaszqzF\n🔗 Weights & code: https://t.co/4ukcXB0iP6","likes":9667,"rts":1494,"replies":578,"views":4844921,"photo":true,"video":false},{"id":"1984207733177090274","date":"2025-10-31","type":"POST","theme":"release","hook":"introducing","text":"Introducing Kimi CLI Technical Preview &amp; Kimi For Coding!\n\nKimi CLI powers your terminal:\n- Shell-like UI + shell command execution\n- Seamless Zsh integration\n- MCP support\n-Agent Client Protocol (now compatible with @zeddotdev)\n\nMore features incoming! https://t.co/uawkpzLXz3","likes":1225,"rts":151,"replies":43,"views":199030,"photo":true,"video":false},{"id":"1984207737673359441","date":"2025-10-31","type":"REPLY","theme":"reply","hook":null,"text":"Kimi For Coding: Exclusive Add-on to Your VIP Plan!\n\nWe've added Kimi For Coding as a powerful add-on built right on top of your current subscription perks.\n\nExtra value, no extra cost.\n\nMore details 👉 https://t.co/JLzu1X0dKH https://t.co/RsvLctXtxP","likes":119,"rts":5,"replies":10,"views":64005,"photo":true,"video":false},{"id":"1984207741037252751","date":"2025-10-31","type":"REPLY","theme":"reply","hook":null,"text":"You are also welcome to share your suggestions and feedback for our Kimi CLI on GitHub.\n\n&gt; https://t.co/cJrEBiWPZg","likes":82,"rts":1,"replies":2,"views":16109,"photo":false,"video":false},{"id":"1983937694360322136","date":"2025-10-30","type":"POST","theme":"benchmark","hook":null,"text":"Kimi Linear Tech Report is dropped! 🚀 \nhttps://t.co/LpnPOu6KVb\n\nKimi Linear: A novel architecture that outperforms full attention with faster speeds and better performance—ready to serve as a drop-in replacement for full attention, featuring our open-sourced KDA kernels! Kimi Linear offers up to a 75% reduction in KV cache usage and up to 6x decoding throughput at a 1M context length.  \n\nKey highlights: \n🔹 Kimi Delta Attention: A hardware-efficient linear attention mechanism that refines the gated delta rule. \n🔹 Kimi Linear Architecture: The first hybrid linear architecture to surpass pure full attention quality across the board. \n🔹 Empirical Validation: Scaled, fair comparisons + open-sourced KDA kernels, vLLM integration, and checkpoints.  \n\nThe future of agentic-oriented attention is here! 💡","likes":1435,"rts":198,"replies":28,"views":522469,"photo":false,"video":false},{"id":"1983942530027925573","date":"2025-10-30","type":"RT","theme":"rt","hook":null,"text":"RT @vllm_project: 🎉 Congrats to @Kimi_Moonshot! vLLM Day-0 model expands! Now supporting Kimi Linear — hybrid linear attention with Kimi De…","likes":0,"rts":32,"replies":0,"views":0,"photo":false,"video":false},{"id":"1983082003731042637","date":"2025-10-28","type":"POST","theme":"other","hook":null,"text":"Kimi K2vv updated! We've added case-by-case statistics for ToolCall-Trigger Similarity and ToolCall-Schema Accuracy. \nFeedback is welcome!\nhttps://t.co/MvvyAhlO0I https://t.co/5Gn8OcC9wG","likes":381,"rts":30,"replies":10,"views":94483,"photo":true,"video":false},{"id":"1983176259317428460","date":"2025-10-28","type":"POST","theme":"research","hook":null,"text":"Glad to team up with Parallax @Gradient_HQ  to bring the open-source model Kimi K2 to more people. With Parallax, you can run Kimi K2's trillion-class MoE across a cluster of Macs and PCs. No enterprise GPUs required.","likes":215,"rts":25,"replies":15,"views":71061,"photo":false,"video":false},{"id":"1981645717845459143","date":"2025-10-24","type":"RT","theme":"rt","hook":null,"text":"RT @vllm_project: 🎉@Kimi_Moonshot co-founder @ppwwyyxx talking about Moonshot’s Decode Context Parallel open source contribution to @vllm_p…","likes":0,"rts":17,"replies":0,"views":0,"photo":false,"video":false},{"id":"1980975401586597968","date":"2025-10-22","type":"POST","theme":"demo","hook":null,"text":"Awesome tutorial from @togethercompute ! Click to see how to build a full-stack Next.js app with Kimi K2. 🚀","likes":192,"rts":14,"replies":5,"views":26341,"photo":false,"video":false},{"id":"1980219115840385349","date":"2025-10-20","type":"POST","theme":"community","hook":"thanks","text":"Thanks for sharing the internal benchmarks, @rauchg ! We love to see it. 🔥","likes":347,"rts":6,"replies":13,"views":52367,"photo":false,"video":false},{"id":"1978047376914080127","date":"2025-10-14","type":"POST","theme":"other","hook":null,"text":"Kimi K2 Turbo now on Trickle🤗","likes":213,"rts":20,"replies":3,"views":23303,"photo":false,"video":false},{"id":"1977518651831095696","date":"2025-10-12","type":"POST","theme":"other","hook":null,"text":"The Kimi-Dev backstory: our pre-Kimi K2 automated software engineering probe. Not the final recipe, but a key signal we needed to go all-in on Agentic Intelligence.","likes":439,"rts":45,"replies":11,"views":56024,"photo":false,"video":false},{"id":"1976926483319763130","date":"2025-10-11","type":"POST","theme":"benchmark","hook":null,"text":"The Kimi K2 vendor verifier(https://t.co/Fzo7OfAGiL) has been updated. \n> You can visually see the difference in tool call accuracy across providers. We've updated the providers counts from 9 to 12, and open-sourced more data entries.\n\nWe're preparing the next benchmark round and need your input.\nIf there's any metric or test case you care about, please drop a note here（ https://t.co/OTkkaauYb3 ）","likes":634,"rts":56,"replies":36,"views":123460,"photo":true,"video":false},{"id":"1972684681364836406","date":"2025-09-29","type":"POST","theme":"community","hook":null,"text":"Love seeing @YouWareAI supercharge their platform with Kimi K2 Turbo API. Time to turn those wild ideas into apps, websites, and games, instantly.\nStart your build: \n🔗 https://t.co/uVyXK5MUlw","likes":151,"rts":14,"replies":4,"views":23532,"photo":false,"video":false},{"id":"1971516521580278194","date":"2025-09-26","type":"POST","theme":"other","hook":null,"text":"Hey, designers just shipped 2 drafts for our official website. Which one to choose?🧐","likes":63,"rts":2,"replies":15,"views":19638,"photo":false,"video":false},{"id":"1971516530006643021","date":"2025-09-26","type":"REPLY","theme":"reply","hook":null,"text":"Option 2: Hidden Sphere https://t.co/AHIbLIGd9L","likes":63,"rts":0,"replies":2,"views":9780,"photo":false,"video":false},{"id":"1971516525321572400","date":"2025-09-26","type":"REPLY","theme":"reply","hook":null,"text":"Option 1: Voyager Record https://t.co/ngfnucQJoX","likes":36,"rts":1,"replies":3,"views":11529,"photo":false,"video":false},{"id":"1971078467560276160","date":"2025-09-25","type":"POST","theme":"research","hook":null,"text":"Say hi to OK Computer, Kimi's agent mode 🤖🎸\nYour AI product & engineering team, all in one.\n\n✨ From chat → multi-page websites, mobile first designs, editable slides\n✨ From up to 1 million rows of data → interactive dashboards\n✨ Agency: self-scopes, surveys & designs\n✨ Natively trained on tools: file system, browser, terminal\n✨ More steps, tokens & tools than chat mode, with turbo K2\n\nAn agentic model with its own computer, K2 now has true agency.","likes":2281,"rts":307,"replies":142,"views":302205,"photo":false,"video":true},{"id":"1971194681682989501","date":"2025-09-25","type":"REPLY","theme":"reply","hook":null,"text":"Try it out: https://t.co/CYkRpbFahd https://t.co/aM0H5OD1g8","likes":95,"rts":3,"replies":5,"views":19400,"photo":true,"video":false},{"id":"1967829577037910427","date":"2025-09-16","type":"POST","theme":"demo","hook":null,"text":"🚀 Kimi K2 Official Turbo API — 50% OFF for 30 days\nCode faster, ship sooner.\nTry it now: https://t.co/ggYlFf809H","likes":500,"rts":41,"replies":20,"views":43726,"photo":true,"video":false},{"id":"1967923416008462785","date":"2025-09-16","type":"POST","theme":"research","hook":null,"text":"Our engineer wrote about the thinking and technical story behind Checkpoint Engine. 👉 https://t.co/WYf47DsTXn","likes":411,"rts":64,"replies":7,"views":41709,"photo":false,"video":false},{"id":"1965785427530629243","date":"2025-09-10","type":"POST","theme":"research","hook":"introducing","text":"Introducing checkpoint-engine: our open-source, lightweight middleware for efficient, in-place weight updates in LLM inference engines, especially effective for RL.\n\n✅ Update a 1T model on thousands of GPUs in ~20s\n✅ Supports both broadcast (sync) & P2P (dynamic) updates\n✅ Optimized pipeline with overlapped communication and copy\n✅ Lightweight & flexible for large-scale deployment\n\nCheck out our work on GitHub: https://t.co/L4c1oUAB6p","likes":2190,"rts":253,"replies":64,"views":355343,"photo":true,"video":false},{"id":"1963802687230947698","date":"2025-09-05","type":"POST","theme":"research","hook":null,"text":"Kimi K2-0905 update 🚀\n- Enhanced coding capabilities, esp. front-end & tool-calling\n- Context length extended to 256k tokens\n- Improved integration with various agent scaffolds (e.g., Claude Code, Roo Code, etc)\n\n🔗 Weights & code: https://t.co/SsFKTnWslD\n💬 Chat with new Kimi K2 on: https://t.co/2bLWEHF6az\n⚡️ For 60–100 TPS + guaranteed 100% tool-call accuracy, try our turbo API: https://t.co/EOZkbOwCN4","likes":2981,"rts":364,"replies":157,"views":638307,"photo":true,"video":false},{"id":"1963808953361735950","date":"2025-09-05","type":"POST","theme":"partnership","hook":null,"text":"Kimi  🤗 Together AI","likes":410,"rts":21,"replies":11,"views":35246,"photo":false,"video":false},{"id":"1963808588826079307","date":"2025-09-05","type":"POST","theme":"other","hook":null,"text":"Kimi 🤗 Cline","likes":259,"rts":6,"replies":2,"views":15172,"photo":false,"video":false},{"id":"1963809362817782194","date":"2025-09-05","type":"RT","theme":"rt","hook":null,"text":"RT @vllm_project: vLLM is proud to support the great Kimi update from @Kimi_Moonshot , better tool-calling, longer context, and more!\n\nChec…","likes":0,"rts":23,"replies":0,"views":0,"photo":false,"video":false},{"id":"1963809467423748288","date":"2025-09-05","type":"RT","theme":"rt","hook":null,"text":"RT @lmsysorg: ⚡️ Big update from Kimi K2!\n256k context, Stronger coding &amp; tool-calling, Smoother agent integration. Already tested with SGL…","likes":0,"rts":15,"replies":0,"views":0,"photo":false,"video":false},{"id":"1963824018542461000","date":"2025-09-05","type":"RT","theme":"rt","hook":null,"text":"RT @GroqInc: Who needs sleep?\nKimi-K2-Instruct-0905 just landed. \n200+ T/s, $1.50/M tokens.\n256k context window.\nBuilt for coding. Rivals S…","likes":0,"rts":66,"replies":0,"views":0,"photo":false,"video":false},{"id":"1961271953509290166","date":"2025-08-29","type":"POST","theme":"other","hook":null,"text":"🌌 Today’s Kimi Doodle: Qixi Festival\n\nLegend says Niulang &amp; Zhinv (China’s Romeo &amp; Juliet) became two stars, Vega &amp; Altair, reuniting across the Milky Way once a year.\n\nHappy Qixi &amp; Happy Friday!\n\nStory's in the doodle 👉 https://t.co/8PH4O9dh6m https://t.co/yxPpx6TJxH","likes":252,"rts":12,"replies":11,"views":18867,"photo":false,"video":true},{"id":"1961011693745811542","date":"2025-08-28","type":"POST","theme":"demo","hook":null,"text":"Kimi Slides is live! 🎉\nIdeas in, decks out. In minutes.\n\nComing soon: Adaptive Layout, auto image search & agentic slides.\n\nTry it out👉https://t.co/RfMEtdhMlI","likes":1571,"rts":169,"replies":54,"views":111239,"photo":false,"video":true},{"id":"1958810602027327616","date":"2025-08-22","type":"POST","theme":"research","hook":null,"text":"⚡️ kimi-k2-turbo-preview GOT SPEED BOOST AGAIN!\n- Normal speed: 60 tok/s\n- Off-peak hours: up to 100 tok/s\n\n💰 Pricing remains unchanged:\n- $0.30 / million input tokens (cache hit)\n- $1.20 / million input tokens (cache miss)\n- $5.00 / million output tokens\n\n👉 Enjoy the turbo turbo boost: https://t.co/EOZkbOwCN4","likes":995,"rts":90,"replies":42,"views":70097,"photo":true,"video":false},{"id":"1957328472956887343","date":"2025-08-18","type":"POST","theme":"other","hook":null,"text":"We're teaming up with HKU to open source OpenCUA, the first full framework for computer-use agents.","likes":1039,"rts":105,"replies":19,"views":76235,"photo":false,"video":false},{"id":"1955573712176218141","date":"2025-08-13","type":"POST","theme":"agent","hook":null,"text":"Kimi-K2-turbo is now live on @_akhaliq 's Anycoder 🚀Time to vibe coding at turbo speed! https://t.co/s4tqmCn8MI https://t.co/xBstCrq9Xo","likes":482,"rts":37,"replies":14,"views":36806,"photo":false,"video":true},{"id":"1955570474513264731","date":"2025-08-13","type":"POST","theme":"other","hook":null,"text":"🤗","likes":107,"rts":5,"replies":4,"views":15123,"photo":false,"video":false},{"id":"1953367380354371903","date":"2025-08-07","type":"POST","theme":"community","hook":null,"text":"Coding isn't just science. It's art. \nWith Kimi K2, a single sentence becomes a living, breathing website. \n\nHere's what we've made 👇  \n\n*Huge thanks to the creators (in no particular order):\n@_akhaliq , @chetaslua , @AlexanderFYoung ,  @fabianstelzer , @Saboo_Shubham_ , Two Minute Papers, 丑猫UglyCat, CM_, DeadRabbit, K., OhMyKing, PyduckGo《计算机辅导代码修改讲解》, 人机交互Alex, 瑞克辣娜RickNana, SeriousGames,  思花, 二雨Tworain, Zzzeo.","likes":606,"rts":58,"replies":19,"views":31771,"photo":false,"video":true},{"id":"1952595925769257263","date":"2025-08-05","type":"POST","theme":"other","hook":null,"text":"Kimi K2 might get wrecked (it's a non-thinking model, after all) . But it will show up anyway🫡","likes":1182,"rts":47,"replies":50,"views":71350,"photo":false,"video":false},{"id":"1951504038828343515","date":"2025-08-02","type":"POST","theme":"other","hook":null,"text":"We just launched a new space for API feedback, bug reports, and questions. Love to hear from you! https://t.co/1D7Evv2glU","likes":324,"rts":25,"replies":11,"views":28658,"photo":false,"video":false},{"id":"1951168907131355598","date":"2025-08-01","type":"POST","theme":"release","hook":null,"text":"🆕 Say hello to kimi-k2-turbo-preview\nSame model. Same context. NOW 4× FASTER.\n\n⚡️ From 10 tok/s to 40 tok/s.\n\n💰 Limited-Time Launch Price (50% off until Sept 1)\n- $0.30 / million input tokens (cache hit)\n- $1.20 / million input tokens (cache miss)\n- $5.00 / million output tokens\n\n👉 Explore more: https://t.co/ggYlFf809H","likes":1575,"rts":171,"replies":63,"views":191947,"photo":true,"video":false},{"id":"1950837337971413239","date":"2025-07-31","type":"POST","theme":"research","hook":null,"text":"From Kimi K2 to the next wave of agentic AI, we’re just getting started.\nCome build with us!\n\nRoles↓\n- API Business Development\n- Research Scientist/Engineer - Agentic RL\n- Social Media Growth/PR\n- Research Scientist - Pre-training/Post-training/Multimodal\n- LLM Product Manager\n- Developer Community Evangelist\n\n👉 Apply via email: hr@moonshot.ai","likes":644,"rts":55,"replies":13,"views":37510,"photo":true,"video":false},{"id":"1950111615782699196","date":"2025-07-29","type":"RT","theme":"rt","hook":null,"text":"RT @percyliang: HELM capabilities v1.9.0 is out (Grok 4 and Kimi K2 make the top 10 overall), and Kimi K2 is the best non-thinking model: h…","likes":0,"rts":13,"replies":0,"views":1,"photo":false,"video":false},{"id":"1948641779278119255","date":"2025-07-25","type":"RT","theme":"rt","hook":null,"text":"RT @windsurf_ai: Kimi K2 is now available in Windsurf. \n\nLet us know what you think! https://t.co/PDgngqx0Bl","likes":0,"rts":64,"replies":0,"views":0,"photo":true,"video":false},{"id":"1948395083130442002","date":"2025-07-24","type":"RT","theme":"rt","hook":null,"text":"RT @_akhaliq: Kimi K2 @Kimi_Moonshot + @GroqInc vibe coding\n\nanimated visualization that plots a dynamic multiplication circle (a.k.a. time…","likes":0,"rts":18,"replies":0,"views":1,"photo":false,"video":false},{"id":"1948007928633647110","date":"2025-07-23","type":"POST","theme":"event","hook":null,"text":"We're building the Kimi Discord community!  \n\nIf you're passionate about AI, love Kimi, or want to help shape the future of intelligent tools, come join us! 👉https://t.co/DlzaJNdiFZ\n\nIf anything fun or cool happens, you’ll be the first to know.","likes":267,"rts":22,"replies":13,"views":16332,"photo":false,"video":false},{"id":"1947520758760313170","date":"2025-07-22","type":"POST","theme":"benchmark","hook":null,"text":"Kimi K2 tech report just dropped!\n\nQuick hits:\n- MuonClip optimizer: stable + token-efficient pretraining at trillion-parameter scale\n- 20K+ tools, real & simulated: unlocking scalable agentic data\n- Joint RL with verifiable + self-critique rubric rewards: alignment that adapts\n-  Ultra-sparse 1T MoE: open-source SoTA on agentic tasks\n\nSharing the path, not just the results — toward open AGI built on transparency and reproducibility.\n\nTech report👉https://t.co/r5sMImOB97","likes":1692,"rts":234,"replies":77,"views":90208,"photo":true,"video":false},{"id":"1947155042114625985","date":"2025-07-21","type":"POST","theme":"other","hook":null,"text":"🌕 Did you notice Kimi’s doodle today at https://t.co/90c6mINqGs?\nIt’s our little Moon Day surprise - \nA tribute to the spirit of exploration, and to the day humans first set foot on the Moon 🍻 \n\nMay Kimi fuel your next big idea 💡 https://t.co/iZtKxkU0N6","likes":852,"rts":70,"replies":45,"views":49361,"photo":false,"video":true},{"id":"1946876375283216550","date":"2025-07-20","type":"RT","theme":"rt","hook":null,"text":"RT @lmsysorg: 🚨SGLang Summer Fest Bonus Drop🚨\nProud to share a joint effort from Mooncake by\n@Kimi_Moonshot, @Oracle , and SGLang: Kimi K2…","likes":0,"rts":23,"replies":0,"views":0,"photo":false,"video":false},{"id":"1946130043446690030","date":"2025-07-18","type":"POST","theme":"demo","hook":null,"text":"We’ve updated Kimi K2’s chat template to make tool calls more robust.\n\nWhat’s changed:\n- updated default system prompt\n- always use model-returned tool_id in multi-turn tool calls, which is more reliable.\n- If `arguments` in tool call is already a string, don't apply `tojson` to it.\n\nKnown gotchas:\n- vLLM tool_id format bug when tool_choice ≠ auto (fix PR soon)\n\n👉https://t.co/j9fhZqbziZ\n\nRelated Issue:\nhttps://t.co/f9kcf3VjX1","likes":1054,"rts":67,"replies":43,"views":77364,"photo":false,"video":false},{"id":"1945740826338034000","date":"2025-07-17","type":"POST","theme":"other","hook":null,"text":"You found the secret menu! 🤫","likes":750,"rts":59,"replies":22,"views":59556,"photo":false,"video":false},{"id":"1945897926796185841","date":"2025-07-17","type":"RT","theme":"rt","hook":null,"text":"RT @lmarena_ai: 🚨 BREAKING: @Kimi_Moonshot’s Kimi-K2 is now the #1 open model in the Arena!\n\nWith over 3K community votes, it ranks #5 over…","likes":0,"rts":148,"replies":0,"views":1,"photo":false,"video":false},{"id":"1945443759648550956","date":"2025-07-16","type":"RT","theme":"rt","hook":null,"text":"RT @CamelAIOrg: CAMEL-AI now supports @Kimi_Moonshot Kimi K2\n\nWhat’s special about Kimi K2?\n✔️ Trillion-parameter Mixture-of-Experts (MoE)…","likes":0,"rts":11,"replies":0,"views":0,"photo":false,"video":false},{"id":"1945462820147249523","date":"2025-07-16","type":"RT","theme":"rt","hook":null,"text":"RT @lmarena_ai: Kimi K2, the latest from @Kimi_Moonshot is now live in the Arena! https://t.co/P6mNmjf341","likes":0,"rts":45,"replies":0,"views":0,"photo":true,"video":false},{"id":"1945537405337096343","date":"2025-07-16","type":"RT","theme":"rt","hook":null,"text":"RT @allhands_ai: Kimi-K2 is definitely the first strong open-weight competitor to Claude Sonnet.\n\n65.4% on SWE-Bench Verified in OpenHands,…","likes":0,"rts":99,"replies":0,"views":0,"photo":false,"video":false},{"id":"1945155694031741207","date":"2025-07-15","type":"RT","theme":"rt","hook":null,"text":"RT @openrouter: New tutorial on how to use Kimi K2 in Cursor: https://t.co/nLwkzYoNtx","likes":0,"rts":29,"replies":0,"views":0,"photo":true,"video":false},{"id":"1945181645163630803","date":"2025-07-15","type":"RT","theme":"rt","hook":null,"text":"RT @cline: We've just shipped enhanced support for @Kimi_Moonshot's Kimi K2 model in Cline. You can now enjoy a 131k context window, up fro…","likes":0,"rts":25,"replies":0,"views":0,"photo":false,"video":false},{"id":"1944754256059453823","date":"2025-07-14","type":"POST","theme":"other","hook":null,"text":"We've submitted Kimi K2 to @lmarena_ai. Waiting to be added to the match pool:  https://t.co/SQunCQWYdT","likes":877,"rts":41,"replies":26,"views":148253,"photo":false,"video":false},{"id":"1944589115510734931","date":"2025-07-14","type":"POST","theme":"research","hook":null,"text":"Some thoughts on the decisions behind Kimi K2's architecture - from our infra staff","likes":694,"rts":36,"replies":18,"views":78311,"photo":false,"video":false},{"id":"1944713442889498831","date":"2025-07-14","type":"REPLY","theme":"reply","hook":null,"text":"@kalomaze just fyi — there’s a Kimi app with chat!\nsearch “Kimi” on App Store https://t.co/3Ph6PTJUMh","likes":200,"rts":6,"replies":7,"views":9418,"photo":true,"video":false},{"id":"1944618709324337628","date":"2025-07-14","type":"REPLY","theme":"reply","hook":null,"text":"@Yulun_Du Rough English version (via K2) — may not be perfect, but should give you the gist: https://t.co/niRiakw8Z6","likes":57,"rts":4,"replies":1,"views":3681,"photo":false,"video":false},{"id":"1944618486753530312","date":"2025-07-14","type":"REPLY","theme":"reply","hook":null,"text":"Rough English version (via K2) — may not be perfect, but should give you the gist:  https://t.co/niRiakw8Z6","likes":43,"rts":2,"replies":0,"views":11780,"photo":false,"video":false},{"id":"1944754522112638983","date":"2025-07-14","type":"REPLY","theme":"reply","hook":null,"text":"@yasei_no_otoko @lmarena_ai Thanks! fixed it :)","likes":1,"rts":0,"replies":0,"views":162,"photo":false,"video":false},{"id":"1944224975428497549","date":"2025-07-13","type":"POST","theme":"research","hook":null,"text":"Super excited to see Kimi K2 land on Perplexity.\n\nIf you're fine-tuning, quick reminder: using the Muon optimizer during both fine-tuning and RL phases gives the best results (details are in our Moonlight paper).","likes":2346,"rts":116,"replies":40,"views":231980,"photo":false,"video":false},{"id":"1943864647616278589","date":"2025-07-12","type":"REPLY","theme":"reply","hook":null,"text":"@kellerjordan0 Big thanks, Keller! We’ve been building on top of your work, and we love Muon :)","likes":101,"rts":1,"replies":0,"views":2536,"photo":false,"video":false},{"id":"1943848547516133812","date":"2025-07-12","type":"REPLY","theme":"reply","hook":null,"text":"@ClementDelangue @huggingface Big thanks!","likes":28,"rts":0,"replies":0,"views":1760,"photo":false,"video":false},{"id":"1943848992603090990","date":"2025-07-12","type":"REPLY","theme":"reply","hook":null,"text":"@vllm_project Big thanks!","likes":10,"rts":0,"replies":1,"views":918,"photo":false,"video":false},{"id":"1943687594560332025","date":"2025-07-11","type":"POST","theme":"release","hook":"hello","text":"🚀 Hello, Kimi K2!  Open-Source Agentic Model!\n🔹 1T total / 32B active MoE model\n🔹 SOTA on SWE Bench Verified, Tau2 & AceBench among open models\n🔹Strong in coding and agentic tasks\n🐤 Multimodal & thought-mode not supported for now\n\nWith Kimi K2, advanced agentic intelligence is more open and accessible than ever. We can't wait to see what you build!\n\n🔌 API is here: https://t.co/EOZkbOwCN4\n- $0.15 / million input tokens (cache hit) \n- $0.60 / million input tokens (cache miss) \n- $2.50 / million output tokens\n\n🔗 Tech blog: https://t.co/2RP7U3iakZ\n🔗 Weights & code: https://t.co/4ukcXB0iP6\n🔗 Github: https://t.co/B2bA4SfXBl\nTry it now at  https://t.co/85jA71X9gw or via API!","likes":6626,"rts":1147,"replies":276,"views":2686570,"photo":true,"video":false},{"id":"1943694959057699258","date":"2025-07-11","type":"POST","theme":"demo","hook":null,"text":"🚀 Kimi K2 is here! \nBuilt for code &amp; agentic tasks. \n\nTry it now at https://t.co/7YeIld97BT or via API. https://t.co/Q05DQo2kuF","likes":1551,"rts":159,"replies":52,"views":107596,"photo":false,"video":true},{"id":"1943687599727763835","date":"2025-07-11","type":"REPLY","theme":"reply","hook":null,"text":"Here are some vibe tests we ran:\n\n1. Interactive 3D Mountain Scene https://t.co/aI9PJSTflh","likes":338,"rts":13,"replies":4,"views":58825,"photo":false,"video":true},{"id":"1943687612759183489","date":"2025-07-11","type":"REPLY","theme":"reply","hook":null,"text":"4. 3D Particle Galaxy Simulation https://t.co/PVlnpCus46","likes":272,"rts":12,"replies":3,"views":44981,"photo":false,"video":true},{"id":"1943687603879850131","date":"2025-07-11","type":"REPLY","theme":"reply","hook":null,"text":"2. A ball bouncing in hexagon https://t.co/DhicknAtd7","likes":260,"rts":10,"replies":6,"views":59408,"photo":false,"video":true},{"id":"1943687608535769140","date":"2025-07-11","type":"REPLY","theme":"reply","hook":null,"text":"3. Visual Analysis of Remote Work and Salary Trends\n\n*Agent capabilities available via API. More tools coming soon on https://t.co/85jA71X9gw","likes":226,"rts":6,"replies":1,"views":39639,"photo":false,"video":true},{"id":"1943687616844747127","date":"2025-07-11","type":"REPLY","theme":"reply","hook":null,"text":"5. Coldplay 2025 Concert Trip Planner\n\n*Agent capabilities available via API. More tools coming soon on https://t.co/85jA71X9gw","likes":187,"rts":8,"replies":5,"views":40130,"photo":false,"video":true},{"id":"1942541988366279023","date":"2025-07-08","type":"REPLY","theme":"reply","hook":null,"text":"@leo_grundstrom @darshal_ We'll open source a cool model very soon, stay tuned :)","likes":3,"rts":0,"replies":1,"views":103,"photo":false,"video":false},{"id":"1941098991271415826","date":"2025-07-04","type":"POST","theme":"benchmark","hook":"meet","text":"Meet Kimi Researcher 👋\n\nReads. Reasons. Codes. \nAll with our own model. Turn any research into a page worth reading.\n\n🌟 Top-ranked on Human's Last Exam (HLE), SEAL-0, xBench-DeepSearch, SimpleQA.\n\nTry it now → https://t.co/8PH4O9dh6m https://t.co/4lwRpRziL2","likes":831,"rts":112,"replies":37,"views":71356,"photo":false,"video":true},{"id":"1938446683811250595","date":"2025-06-27","type":"REPLY","theme":"reply","hook":null,"text":"@risphereeditor We're on it. Stay tuned.","likes":2,"rts":0,"replies":1,"views":319,"photo":false,"video":false},{"id":"1937978360250175733","date":"2025-06-25","type":"REPLY","theme":"reply","hook":null,"text":"@ml0_1337 open weights are the plan. we'll drop the size and specs when it's ready.  more details →https://t.co/lNC0HKrndr","likes":1,"rts":0,"replies":0,"views":310,"photo":false,"video":false},{"id":"1937978810269635004","date":"2025-06-25","type":"REPLY","theme":"reply","hook":null,"text":"@JendryDomingo Kimi-Researcher beta access is rolling out at https://t.co/8PH4O9dh6m — get on the waitlist → https://t.co/fdKzjy7vpj","likes":0,"rts":0,"replies":0,"views":299,"photo":false,"video":false},{"id":"1936769426604601569","date":"2025-06-22","type":"REPLY","theme":"reply","hook":null,"text":"@casper_hansen_ Our setup matches the HLELeaderboard: official judge prompt from the HLE repo + o3-mini as the judge model.","likes":9,"rts":0,"replies":0,"views":3811,"photo":false,"video":false},{"id":"1936105761358368944","date":"2025-06-20","type":"POST","theme":"research","hook":"meet","text":"Meet Kimi-Researcher - an autonomous agent that excels at multi-turn search and reasoning. Powered by k 1.5 and trained with end-to-end agentic RL. \n\nAchieved 26.9% pass@1 on Humanity's Last Exam, 69% pass@1 on xbench.\n\n🔗 Tech blog：https://t.co/lNC0HKrndr https://t.co/yMw5SDyONQ","likes":1368,"rts":225,"replies":42,"views":239329,"photo":true,"video":false},{"id":"1936105764260806932","date":"2025-06-20","type":"REPLY","theme":"reply","hook":null,"text":"Benchmarks aside, It thinks:\n→ 23 reasoning steps per task (avg.) \n→ 200+ URLs explored \n→ Multi-turn tool use of search, browser, and code\n→ Inline citations\n\nBeta access is rolling out at https://t.co/8PH4O9dh6m — get on the waitlist 👉 [https://t.co/fdKzjy7vpj]","likes":100,"rts":6,"replies":4,"views":20975,"photo":false,"video":false},{"id":"1936105775099003029","date":"2025-06-20","type":"REPLY","theme":"reply","hook":null,"text":"We took it a step further:\n\n→ Interactive, visualized reports \n→ Interpretable research traces \n→ Grounded reasoning with citations\n\nBuilt to help you understand complex insights at a glance.\nhttps://t.co/rrz7XXA4gf https://t.co/K0eOxrXjaJ","likes":82,"rts":4,"replies":4,"views":16981,"photo":true,"video":false},{"id":"1936105770258706584","date":"2025-06-20","type":"REPLY","theme":"reply","hook":null,"text":"Just give it the question:\n\"Conduct an in-depth research on Nvidia, including its development timeline, revenue model, and strategic plans.\"\n\"Find all benchmarks about DeepSearch for LLMs.\"\n\nKimi-Researcher handles the rest — fully autonomous, multi-step reasoning, no further prompts required.","likes":46,"rts":2,"replies":3,"views":13952,"photo":false,"video":false},{"id":"1936105766571929950","date":"2025-06-20","type":"REPLY","theme":"reply","hook":null,"text":"Join the discussion & share feedback in our Discord.👉\nhttps://t.co/wObI2Kzcjo\n\nTo facilitate more research efforts in the field, we are planning on open-sourcing the base pretrained model as well as the reinforcement-learned model underlying Kimi-Researcher in the following months.","likes":38,"rts":1,"replies":1,"views":7950,"photo":false,"video":false},{"id":"1925025694603739243","date":"2025-05-21","type":"REPLY","theme":"reply","hook":null,"text":"@airesearch12 Access and register on the platform https://t.co/YbizivaQOk . After recharging, you can experience the latest kimi-thinking-preview model.","likes":2,"rts":0,"replies":0,"views":434,"photo":false,"video":false},{"id":"1925026355776991606","date":"2025-05-21","type":"REPLY","theme":"reply","hook":null,"text":"@DavidSZDahan Access and register on the https://t.co/YbizivaQOk. After your first recharge, you can obtain a $5 voucher.","likes":1,"rts":0,"replies":1,"views":366,"photo":false,"video":false},{"id":"1925025968953163796","date":"2025-05-21","type":"REPLY","theme":"reply","hook":null,"text":"@EdwinYanez20 Currently, only Google login is supported. Thank you.","likes":0,"rts":0,"replies":0,"views":300,"photo":false,"video":false},{"id":"1925026733243453678","date":"2025-05-21","type":"REPLY","theme":"reply","hook":null,"text":"@You202516 Click on \"console\" at the top right corner of the platform to start registering. https://t.co/8syTVVGR5b","likes":0,"rts":0,"replies":0,"views":234,"photo":false,"video":false},{"id":"1924799513639977088","date":"2025-05-20","type":"POST","theme":"demo","hook":null,"text":"Our latest long-thinking model, kimi-thinking-preview, is now available on https://t.co/YbizivaQOk! It boasts excellent multimodal and reasoning capabilities. Sign up now and get a $5 voucher. Give it a try!","likes":234,"rts":34,"replies":11,"views":31745,"photo":false,"video":false},{"id":"1924788935211016488","date":"2025-05-20","type":"POST","theme":"other","hook":null,"text":"Our global platform is live. If you're eager to explore the latest Kimi models, visit https://t.co/YbizivaQOk. Ready to dive in?  #Moonshot #kimi","likes":150,"rts":13,"replies":6,"views":15399,"photo":false,"video":false},{"id":"1916942662911070311","date":"2025-04-28","type":"REPLY","theme":"reply","hook":null,"text":"@JiaLi52524397 Introducing CombiBench, a benchmark focusing on combinatorics problems ! 🔥 @JiaLi52524397\n🏆https://t.co/mR0pio3DEr\n📷Dataset -&gt; https://t.co/guazVWYMrp https://t.co/a54uDw7MX1","likes":43,"rts":5,"replies":4,"views":11195,"photo":true,"video":false},{"id":"1915807071960007115","date":"2025-04-25","type":"POST","theme":"release","hook":null,"text":"Announcing 🎙️ Kimi-Audio! Our new open-source audio foundation model advances capabilities in audio understanding, generation, and conversation.\n\nKey Features & Achievements:\n✅ Universal audio foundation model handles diverse tasks like speech recognition, audio understanding, audio-to-text chat, speech-to-speech conversation.\n✅ Large-scale pre-training on >13 Million hours of diverse audio data (speech, music, sounds).\n✅ Unique 12.5Hz tokenizer & hybrid architecture for rich perception and efficient generation.\n✅ SOTA on 10+ audio benchmarks: excels in Speech Recognition (LibriSpeech 1.28/2.42 WER), Audio Understanding (MMAU, VocalSound), and Conversation (VoiceBench).\n\nWe're also releasing our comprehensive evaluation toolkit to foster fair benchmarking! 🛠️\n📄Dive into the details in our Technical Report: https://t.co/ftKtEF0fHp\n\n🌟Explore the Code, Models & Eval Toolkit on\n GitHub:  https://t.co/hk20wLuSnO \n HuggingFace: https://t.co/SrUVg9v38e\n\nExcited to see the innovative audio applications the community will build!","likes":1111,"rts":220,"replies":39,"views":122582,"photo":true,"video":false},{"id":"1911805130099638683","date":"2025-04-14","type":"POST","theme":"benchmark","hook":null,"text":"🔬 Sharing an early look at Kimina-Prover, our new Lean theorem proving model from our collaboration with Numina! @JiaLi52524397\n\n🏆 Using an RL pipeline for proof exploration, Kimina-Prover Preview achieved 80.7% on the miniF2F — currently SOTA on this benchmark. We see promise in this approach for intuitive proof discovery.\n\nOpen-sourcing:\n✅1.5B/7B distilled models\n✅Custom autoformalizer\n✅Revised miniF2F benchmark\n\nSupporting the Lean community while we continue development. This is ongoing work, stay tuned for updates!\n\n👉🏻 Full technical report on GitHub: 🔗  https://t.co/UZN29xJhKf","likes":334,"rts":62,"replies":10,"views":33180,"photo":true,"video":false},{"id":"1911062791256948760","date":"2025-04-12","type":"POST","theme":"demo","hook":null,"text":"Try it here ! https://t.co/uMqWEsC4Vr","likes":129,"rts":17,"replies":7,"views":15489,"photo":false,"video":false},{"id":"1910035354570371082","date":"2025-04-09","type":"POST","theme":"research","hook":null,"text":"🚀 Meet Kimi-VL and Kimi-VL-Thinking! 🌟 Our latest open source lightweight yet powerful Vision-Language Model with reasoning capability.\n\n✨ Key Highlights:\n💡 An MoE VLM and an MoE Reasoning VLM with only ~3B activated parameters  \n🧠 Strong multimodal reasoning (36.8% on MathVision, on par with 10x larger models) and agent skills (34.5% on ScreenSpot-Pro)  \n🖼️ Handles high-res visuals natively with MoonViT (867 on OCRBench)  \n🧾 Supports long context windows up to 128K (35.1% on MMLongBench-Doc, 64.5% on LongVideoBench)  \n🏆 Outperforms larger models like GPT-4o on key benchmarks\n\n📜 Paper: https://t.co/qCjeS3pSq0\n🤗 Huggingface: https://t.co/cgCMsiHN8p\n🌱 While this release marks just one small step, we're excited to see how the community builds upon it.","likes":1017,"rts":206,"replies":34,"views":120320,"photo":true,"video":false},{"id":"1899081853950369903","date":"2025-03-10","type":"POST","theme":"demo","hook":null,"text":"🔷 Google login is HERE!\n\nYou asked, we delivered!\n\nTry it now at https://t.co/7YeIld97BT https://t.co/uT7LHC4yIV","likes":464,"rts":41,"replies":60,"views":65070,"photo":true,"video":false},{"id":"1897929976948965870","date":"2025-03-07","type":"POST","theme":"other","hook":null,"text":"https://t.co/dxZnLxvPae","likes":613,"rts":79,"replies":9,"views":89122,"photo":false,"video":false},{"id":"1895455915085877707","date":"2025-02-28","type":"POST","theme":"research","hook":null,"text":"As we promised in the paper, we now release the intermediate checkpoints of Moonlight and Moonlight-A to support research!\n\n🔗Link below:\nhttps://t.co/aCQXfcE3aO https://t.co/NuxOuPJLK9","likes":600,"rts":85,"replies":43,"views":54655,"photo":true,"video":false},{"id":"1895361577366495616","date":"2025-02-28","type":"REPLY","theme":"reply","hook":null,"text":"@Xianbao_QIAN Yup, we're cooking some good stuff.","likes":0,"rts":0,"replies":0,"views":545,"photo":false,"video":false},{"id":"1895455929958883645","date":"2025-02-28","type":"REPLY","theme":"reply","hook":null,"text":"🔹Some highlights:\n\n1. We can see Muon trained Moonlight models perform better in Math and Code than AdamW trained Moonlight-A.\n\n2. We can also analyze the different behaviors on SVD entropy and Srank of Moonlight and Moonlight-A intermediate checkpoints.","likes":0,"rts":0,"replies":0,"views":7465,"photo":false,"video":false},{"id":"1894556544672715263","date":"2025-02-26","type":"POST","theme":"research","hook":null,"text":"🏆 Excited to share that our paper \"Mooncake\" received the Best Paper Award at FAST 2025 (23rd USENIX Conference on File and Storage Technologies)!\n\n🔍 Mooncake leverages underutilized CPU, DRAM, and SSD resources to create a distributed KVCache, optimizing LLM chatbot serving through efficient storage and computation trade-offs.\n\n🚀 Highlights: \n• Disaggregated prefill and decoding clusters \n• Up to 498% throughput gain in simulations \n• 115% more requests handled in real-world scenarios\n\n💻 Check out our paper and project: https://t.co/0Zzt6L2lIU","likes":304,"rts":51,"replies":4,"views":46572,"photo":true,"video":false},{"id":"1894575196167967216","date":"2025-02-26","type":"POST","theme":"research","hook":null,"text":"To bring Mooncake's novel KVCache-centric architecture to the open-source community, the Mooncake and vLLM teams have collaborated on a multi-stage roadmap. This integration will introduce P/D disaggregation and a global KVCache design to vLLM.   \n\nCheck out the design doc and join our discussion in the feat-prefill-disaggregation channel on vLLM's Slack, and explore the initial PR here: https://t.co/Wp1h8ytKZH \n\nWe look forward to the community's feedback and contributions!","likes":189,"rts":23,"replies":2,"views":20366,"photo":false,"video":false},{"id":"1893379158472044623","date":"2025-02-22","type":"POST","theme":"research","hook":null,"text":"🚀 Introducing our new tech report: Muon is Scalable for LLM Training\n\nWe found that Muon optimizer can be scaled up using the follow techniques: \n• Adding weight decay\n• Carefully adjusting the per-parameter update scale\n\n✨ Highlights:\n• ~2x computational efficiency vs AdamW \n• Seamless transition from AdamW to Muon without hyper-parameter tuning \n• Memory & communication efficient implementation of distributed Muon optimizer.\n\n🎯 Based on these improvements, we introduce Moonlight: Our 3B/16B MoE model trained with Muon on 5.7T tokens, advancing the Pareto frontier with better performance at fewer FLOPs!\n\n🎁 Open-sourcing everything:\n📚 Code & implementation: https://t.co/oFyv7399Zy\n🤗 Full model series (pretrained, instruction-tuned & intermediate checkpoints): https://t.co/4ukcXB0iP6\n📜 Paper: https://t.co/hSFW2CF3Je\n#AI #LLM #OpenSource #MoonshotAI","likes":1858,"rts":301,"replies":84,"views":757111,"photo":true,"video":false},{"id":"1893380724419342430","date":"2025-02-22","type":"POST","theme":"research","hook":null,"text":"We’ve answered the three remaining open questions @kellerjordan0 posted at https://t.co/R9YdKZx941:\n- Yes, Muon scales to larger compute. \n- Yes, Muon can be trained on a large cluster.\n- Yes, Muon works for SFT. RL probably works too, leave it to the audience as exercise :)","likes":387,"rts":49,"replies":9,"views":33502,"photo":false,"video":false},{"id":"1892187810431635821","date":"2025-02-19","type":"POST","theme":"other","hook":null,"text":"https://t.co/OU1cdFFcrN","likes":585,"rts":112,"replies":13,"views":53582,"photo":false,"video":false},{"id":"1891825059599352259","date":"2025-02-18","type":"POST","theme":"research","hook":null,"text":"🚀 Introducing MoBA: Mixture of Block Attention for Long-Context LLMs\n\nExcited to share our latest research on Mixture of Block Attention(MoBA)! This innovative approach revolutionizes long-context processing in LLMs by combining the power of Mixture of Experts (MoE) with sparse attention. MoBA achieves efficiency without sacrificing performance, making long-context tasks more scalable than ever.\n\n🔑 Key features of MoBA:\n🔹Trainable block sparse attention: Capable of continued training from any current full attention model\n🔹Parameter-less gating mechanism: Seamlessly switches between full & sparse attention\n🔹Production-proven quality at https://t.co/fiOj6qZoJN , 6.5x speedup at 1M input\n\n🌟 Training and inference code available on GitHub: https://t.co/3F1j9ETF5u","likes":1036,"rts":193,"replies":96,"views":128291,"photo":true,"video":false},{"id":"1890970738007392744","date":"2025-02-16","type":"REPLY","theme":"reply","hook":null,"text":"@CamelAIOrg @MoonshotAi cool and the real Moonshot AI official account is @Kimi_Moonshot  thank you","likes":0,"rts":0,"replies":1,"views":352,"photo":false,"video":false},{"id":"1887730908104696034","date":"2025-02-07","type":"REPLY","theme":"reply","hook":null,"text":"@CJ_Wolff please try https://t.co/NgJ2ZQXOaf","likes":5,"rts":1,"replies":1,"views":2162,"photo":false,"video":false},{"id":"1883915208646943131","date":"2025-01-27","type":"REPLY","theme":"reply","hook":null,"text":"@Unpluggable_ @aixbt_agent Thanks for your interest! https://t.co/7YeIld97BT isn’t engaged in crypto projects. For accurate info, please refer to our official channels!","likes":9,"rts":0,"replies":1,"views":1396,"photo":false,"video":false},{"id":"1883843917520728450","date":"2025-01-27","type":"REPLY","theme":"reply","hook":null,"text":"Thanks for your interest! https://t.co/85jA71X9gw isn’t engaged in crypto projects. For accurate info, please refer to our official channels!","likes":5,"rts":0,"replies":0,"views":917,"photo":false,"video":false},{"id":"1883843786591412260","date":"2025-01-27","type":"REPLY","theme":"reply","hook":null,"text":"Thanks for your interest! https://t.co/85jA71X9gw isn’t engaged in any crypto projects. For accurate info, please refer to our official channels!","likes":1,"rts":0,"replies":2,"views":921,"photo":false,"video":false},{"id":"1883532744225161369","date":"2025-01-26","type":"POST","theme":"other","hook":null,"text":"Kimi k1.5: The Multimodal Reasoning Model \n- Available now on https://t.co/85jA71X9gw 🦄\n\n💡 What can Kimi k1.5 do?\n\n🔹 Image to Code: Convert images into structured code and insights\n🔹 GeoGuessr: Identify and pinpoint locations in geography games like a pro 🌍\n🔹 Visual Confusion Identification: Distinguish between visually confusing objects (like muffins vs. Chihuahuas)\n🔹 Color & Quantity Recognition: Detect colors and accurately count items in images.\n\n🌐 Available now on https://t.co/85jA71X9gw! Experience it today!","likes":1329,"rts":225,"replies":78,"views":200935,"photo":true,"video":false},{"id":"1883532748561977490","date":"2025-01-26","type":"REPLY","theme":"reply","hook":null,"text":"More to Discover with Kimi k1.5 \n\n🔹 Image to Chart: Transform visual data into clean, understandable charts \n🔹 Brand Identification: Recognize and identify brands from logos or product images \n\n🌐 Available now on https://t.co/7YeIld97BT https://t.co/tORwb0gZVX","likes":118,"rts":15,"replies":20,"views":39610,"photo":true,"video":false},{"id":"1883337704668332295","date":"2025-01-26","type":"REPLY","theme":"reply","hook":null,"text":"@techikansh Yes🤫","likes":52,"rts":0,"replies":2,"views":7041,"photo":false,"video":false},{"id":"1883164161506738232","date":"2025-01-25","type":"POST","theme":"release","hook":null,"text":"🚀 Introducing Kimi k1.5 – Now on Web https://t.co/85jA71X9gw! \n\nWe’re excited to announce the launch of Kimi 1.5 on the web! We've also rolled out English support (still fine-tuning). Check out the easy model-switching in the image below.\n\n🔧 Key Features:\n\n🔹 Completely FREE with unlimited usage\n🔹 Real-time web search across 100+ websites\n🔹 Analyze up to 50 files (PDFs, Docs, PPTs, Images) with ease\n🔹 Advanced CoT Reasoning, available at no cost\n🔹 Enhanced image understanding, going beyond basic text extraction\n\n🔜 Mobile version is on its way!","likes":1813,"rts":299,"replies":190,"views":410617,"photo":true,"video":false},{"id":"1883183571533549819","date":"2025-01-25","type":"REPLY","theme":"reply","hook":null,"text":"@mehkhi07 Yes, it's 100% free! You can sign up with U.S. phone numbers, and Google login is coming shortly.","likes":113,"rts":4,"replies":6,"views":13555,"photo":false,"video":false},{"id":"1883183976032145545","date":"2025-01-25","type":"REPLY","theme":"reply","hook":null,"text":"@CodeHerMind Noted!","likes":56,"rts":0,"replies":1,"views":5960,"photo":false,"video":false},{"id":"1882413059513471044","date":"2025-01-23","type":"POST","theme":"other","hook":null,"text":"https://t.co/1nPuE2WiJl","likes":558,"rts":137,"replies":19,"views":77961,"photo":false,"video":false},{"id":"1882295942868771035","date":"2025-01-23","type":"REPLY","theme":"reply","hook":null,"text":"@iamfakhrealam @tom_doerr web app is coming soon!","likes":0,"rts":0,"replies":0,"views":236,"photo":false,"video":false},{"id":"1882037680781066339","date":"2025-01-22","type":"POST","theme":"other","hook":null,"text":"simple is better","likes":136,"rts":8,"replies":6,"views":20520,"photo":false,"video":false},{"id":"1882044707280424972","date":"2025-01-22","type":"REPLY","theme":"reply","hook":null,"text":"@the__sonik Coming soon!","likes":0,"rts":0,"replies":0,"views":244,"photo":false,"video":false},{"id":"1881332472748851259","date":"2025-01-20","type":"POST","theme":"release","hook":null,"text":"🚀 Introducing Kimi k1.5 --- an o1-level multi-modal model\n\n-Sota short-CoT performance, outperforming GPT-4o and Claude Sonnet 3.5 on 📐AIME, 📐MATH-500, 💻 LiveCodeBench by a large margin (up to +550%)\n-Long-CoT performance matches o1 across multiple modalities (👀MathVista, 📐AIME, 💻Codeforces, etc)\n\nTech report: https://t.co/rIgcCuXoJi\n\nKey ingredients of k1.5\n-Long context scaling. Up to 128k tokens for RL generation. Efficient training with partial rollouts.\n-Improved policy optimization: online mirror descent, sampling strategies, length penalty, and others.\n-Multi modalities. Joint reasoning over text and vision.","likes":1608,"rts":408,"replies":115,"views":419062,"photo":true,"video":false},{"id":"1881373612755784160","date":"2025-01-20","type":"POST","theme":"other","hook":null,"text":"Long CoT models improve performance by a lot. \n\nCan short models learn from long ones to obtain even better performance? Our long2short idea explored this possibility and it worked well! Much better token efficiency compared to native short models like GPT-4o. \n\nA few methods we experimented with---RL with heavy length penalty, merging long-CoT models with short-CoT models, etc. \n\n⬇️Check out our tech report for details: https://t.co/rIgcCuXoJi","likes":116,"rts":12,"replies":7,"views":12194,"photo":true,"video":false},{"id":"1881348064658735418","date":"2025-01-20","type":"REPLY","theme":"reply","hook":null,"text":"@Cryp70 Coming soon, stay tuned!","likes":0,"rts":0,"replies":0,"views":10235,"photo":false,"video":false},{"id":"1881385005932568746","date":"2025-01-20","type":"REPLY","theme":"reply","hook":null,"text":"@DrJimFan Kudos! Thanks for sharing! Yep, we're *multimodal* o1-style reasoning ✌️","likes":0,"rts":0,"replies":0,"views":5600,"photo":false,"video":false},{"id":"1881387161934770485","date":"2025-01-20","type":"REPLY","theme":"reply","hook":null,"text":"@stochasticchasm Nope, it means the model can perform deep reasoning based on images it sees. For example: geo guesser.","likes":0,"rts":0,"replies":0,"views":130,"photo":false,"video":false},{"id":"1881388663927603628","date":"2025-01-20","type":"REPLY","theme":"reply","hook":null,"text":"@stochasticchasm oops, got typo😂 geoguessr! Thank you :D","likes":0,"rts":0,"replies":0,"views":165,"photo":false,"video":false},{"id":"1877688016900366434","date":"2025-01-10","type":"POST","theme":"research","hook":null,"text":"Meet Mooncake: The LLM Serving Platform Powering https://t.co/7YeIld97BT\n\n💡 Advanced KVCache architecture for LLMs\n🚀 5x throughput for long-context tasks\n📢 Fully integrated with open-source vLLM\n\nLearn more at https://t.co/qI2paI1saZ https://t.co/DV4XvlP3hB","likes":44,"rts":9,"replies":14,"views":15270,"photo":true,"video":false}];
+
+// ====================== CONSTANTS ======================
+const DATE_START = '2025-01-01';
+const DATE_END   = '2026-05-31';
+const PHASE_OF_MONTH = {
+  // month-index "YYYY-MM" → phase number (1-5)
+  '2024-12': 1, '2025-01': 2, '2025-02': 2,
+  '2025-03': 3, '2025-04': 3, '2025-05': 3, '2025-06': 3,
+  '2025-07': 4, '2025-08': 4, '2025-09': 4, '2025-10': 4, '2025-11': 4, '2025-12': 4,
+  '2026-01': 5, '2026-02': 5, '2026-03': 5, '2026-04': 5, '2026-05': 5,
+};
+
+function likesToHeat(l) {
+  if (l <= 0) return 0;
+  if (l < 100) return 1;
+  if (l < 500) return 2;
+  if (l < 1500) return 3;
+  if (l < 5000) return 4;
+  if (l < 15000) return 5;
+  return 6;
+}
+function fmt(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+  return String(n);
+}
+function pad(n) { return String(n).padStart(2, '0'); }
+
+// ====================== BUILD INDEX ======================
+const byDate = {};
+TWEETS.forEach(t => {
+  if (!byDate[t.date]) byDate[t.date] = [];
+  byDate[t.date].push(t);
+});
+
+// ====================== BUILD HEATMAP ======================
+function buildHeatmap() {
+  const root = document.getElementById('heatmap');
+  // Months from 2025-01 to 2026-05
+  const months = [];
+  for (let y = 2025; y <= 2026; y++) {
+    const startM = (y === 2025) ? 1 : 1;
+    const endM   = (y === 2026) ? 5 : 12;
+    for (let m = startM; m <= endM; m++) {
+      months.push({ y: y, m: m, key: `${y}-${pad(m)}` });
+    }
+  }
+
+  // Axis row (days 1-31)
+  let html = '';
+  html += '<div class="heatmap-axis-days"><div class="lbl">月份</div>';
+  for (let d = 1; d <= 31; d++) {
+    html += `<div>${d % 5 === 0 || d === 1 ? d : ''}</div>`;
+  }
+  html += '</div>';
+
+  // Month rows
+  months.forEach(mo => {
+    const phase = PHASE_OF_MONTH[mo.key] || 0;
+    const monthName = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][mo.m-1];
+    html += `<div class="heatmap-row" data-phase="${phase}">`;
+    html += `<div class="row-label"><span class="phase-tag"></span><span class="month">${monthName}</span><span class="yr">${mo.y}</span></div>`;
+    const daysInMonth = new Date(mo.y, mo.m, 0).getDate();
+    for (let d = 1; d <= 31; d++) {
+      if (d > daysInMonth) {
+        html += '<div class="cell empty"></div>';
+      } else {
+        const dateStr = `${mo.y}-${pad(mo.m)}-${pad(d)}`;
+        const tweets = byDate[dateStr];
+        if (tweets) {
+          const maxLikes = Math.max(...tweets.map(t => t.likes));
+          const heat = likesToHeat(maxLikes);
+          html += `<div class="cell has" data-date="${dateStr}" data-h="${heat}" data-likes="${maxLikes}" data-count="${tweets.length}"></div>`;
+        } else {
+          html += `<div class="cell" data-h="0" data-date="${dateStr}"></div>`;
+        }
+      }
+    }
+    html += '</div>';
+  });
+
+  root.innerHTML = html;
+}
+buildHeatmap();
+
+// ====================== TOOLTIP ======================
+const tip = document.getElementById('tip');
+function showTip(cell, evt) {
+  if (!cell.classList.contains('has')) return;
+  const d = cell.dataset.date;
+  const c = cell.dataset.count;
+  const l = cell.dataset.likes;
+  tip.innerHTML = `<span class="d">${d}</span> · ${c} 条推文 · 最高 <span class="v">${parseInt(l).toLocaleString()}</span> 赞`;
+  tip.classList.add('show');
+  const rect = cell.getBoundingClientRect();
+  tip.style.left = (rect.left + rect.width / 2 - 100) + 'px';
+  tip.style.top = (rect.top - 40) + 'px';
+}
+function hideTip() { tip.classList.remove('show'); }
+
+// ====================== TWEET PANEL ======================
+const THEME_LABEL = {
+  release: '模型发布',
+  research: '论文/研究',
+  agent: 'Agent/产品',
+  benchmark: 'Benchmark',
+  partnership: '合作伙伴',
+  community: '社区回应',
+  demo: '用例/Demo',
+  event: '活动/演讲',
+  promo: '促销',
+  context: '长上下文',
+  other: '其他',
+  reply: '回复',
+  rt: '转推',
+};
+
+function renderTweetPanel(date) {
+  const panel = document.getElementById('tweet-detail');
+  const tweets = byDate[date];
+  if (!tweets) {
+    panel.innerHTML = `
+      <div class="panel-title">推文详情</div>
+      <div class="tweet-panel-empty">
+        <div class="icon">∅</div>
+        <div>${date} · 这一天没有推文</div>
+      </div>`;
+    return;
+  }
+  tweets.sort((a, b) => b.likes - a.likes);
+  const dateFmt = date.replace(/-/g, '·');
+  let html = `<div class="panel-title">推文详情</div>`;
+  html += `<div class="tweet-panel">`;
+  html += `<div class="tweet-panel-date"><span>${dateFmt}</span><span style="color:var(--mute);font-size:11px;font-weight:400;">${tweets.length} 条</span></div>`;
+  tweets.forEach(t => {
+    const themeLbl = THEME_LABEL[t.theme] || t.theme;
+    const text = t.text.replace(/https:\/\/t\.co\/\S+/g, '[link]');
+    html += `<div class="tweet-card">
+      <div class="tweet-card-header">
+        <span class="tweet-type ${t.type}">${t.type}</span>
+        <span class="tweet-likes">${t.likes.toLocaleString()} <span class="dim">likes</span></span>
+      </div>
+      <div class="tweet-text">${escapeHtml(text)}</div>
+      <div class="tweet-stats">
+        <span>RT <span class="v">${t.rts.toLocaleString()}</span></span>
+        <span>REP <span class="v">${t.replies.toLocaleString()}</span></span>
+        <span>VIEWS <span class="v">${fmt(t.views)}</span></span>
+      </div>
+      <div class="tweet-meta">
+        ${t.type === 'POST' || t.type === 'PIN' ? `<span class="badge theme">${themeLbl}</span>` : ''}
+        ${t.hook ? `<span class="badge">${t.hook}</span>` : ''}
+        ${t.photo ? `<span class="badge media">photo</span>` : ''}
+        ${t.video ? `<span class="badge media">video</span>` : ''}
+        <a class="tweet-link" href="https://x.com/Kimi_Moonshot/status/${t.id}" target="_blank">在 X 上打开 →</a>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+  panel.innerHTML = html;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ====================== EVENTS ======================
+document.querySelectorAll('.cell.has').forEach(cell => {
+  cell.addEventListener('mouseenter', e => showTip(cell, e));
+  cell.addEventListener('mouseleave', hideTip);
+  cell.addEventListener('click', () => {
+    document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
+    cell.classList.add('selected');
+    renderTweetPanel(cell.dataset.date);
+  });
+});
+
+// ====================== FILTERS ======================
+const chips = document.querySelectorAll('.chip');
+chips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    chips.forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    applyFilter(chip.dataset.filter);
+  });
+});
+
+function applyFilter(filter) {
+  document.querySelectorAll('.cell').forEach(c => {
+    c.classList.remove('dimmed');
+  });
+  if (filter === 'all') return;
+
+  document.querySelectorAll('.cell.has').forEach(cell => {
+    const tweets = byDate[cell.dataset.date] || [];
+    let match = false;
+    if (filter === 'viral') {
+      match = tweets.some(t => t.likes >= 1000);
+    } else if (filter === 'media') {
+      match = tweets.some(t => t.photo || t.video);
+    } else {
+      match = tweets.some(t => t.theme === filter);
+    }
+    if (!match) cell.classList.add('dimmed');
+  });
+}
+
+// ====================== FILTER COUNTS ======================
+function fillCounts() {
+  const counts = {};
+  TWEETS.forEach(t => {
+    counts[t.theme] = (counts[t.theme] || 0) + 1;
+  });
+  ['release','research','agent','benchmark','partnership','promo'].forEach(k => {
+    const el = document.getElementById('ct-' + k);
+    if (el) el.textContent = counts[k] || 0;
+  });
+}
+fillCounts();
+
+
+// ====================== TOP 10 ======================
+const TOP10 = [
+  {rank:'i.', date:'2026-03-20', tag:'借势 · 友商', tagFull: 'partnership',
+    text:'Congrats to the @cursor_ai team on the launch of Composer 2!\n\nWe are proud to see Kimi-k2.5 provide the foundation. Seeing our model integrated effectively through Cursor\'s continued pretraining & high-compute RL training is the open model ecosystem we love to support.',
+    likes:20348, rts:1390, replies:517, views:3524606,
+    insight:'借势夸友商 + 真诚祝贺 + 自我植入 = 全期 No.1'},
+  {rank:'ii.', date:'2026-04-20', tag:'Meet · 大发布', tagFull: 'release',
+    text:'Meet Kimi K2.6: Advancing Open-Source Coding\n\n🔹Open-source SOTA on HLE w/ tools (54.0), SWE-Bench Pro (58.6), SWE-bench Multilingual (76.7), BrowseComp (83.2)...',
+    likes:18154, rts:2406, replies:931, views:7465452,
+    insight:'置顶推文 + 7 个 benchmark 数字密度 + 配 hero 图'},
+  {rank:'iii.', date:'2026-01-27', tag:'Meet · 大发布', tagFull: 'release',
+    text:'🥝 Meet Kimi K2.5, Open-Source Visual Agentic Intelligence.\n\n🔹 Global SOTA on Agentic Benchmarks: HLE full set (50.2%), BrowseComp (74.9%)\n🔹 Open-source SOTA on coding & visual reasoning',
+    likes:15888, rts:1987, replies:777, views:7340884,
+    insight:'用 🥝 替代 🚀 emoji — 品牌化新尝试'},
+  {rank:'iv.', date:'2026-03-16', tag:'Introducing · 论文', tagFull: 'research',
+    text:'Introducing 𝑨𝒕𝒕𝒆𝒏𝒕𝒊𝒐𝒏 𝑹𝒆𝒔𝒊𝒅𝒖𝒂𝒍𝒔: Rethinking depth-wise aggregation.\n\nResidual connections have long relied on fixed, uniform accumulation. Inspired by the duality of time and depth...',
+    likes:13539, rts:2066, replies:336, views:5048949,
+    insight:'纯研究内容也能爆 — 因 thesis 句够 SEO ("Rethinking ___")'},
+  {rank:'v.', date:'2025-11-06', tag:'Hello · 大发布', tagFull: 'release',
+    text:'🚀 Hello, Kimi K2 Thinking!\nThe Open-Source Thinking Agent Model is here.\n\n🔹 SOTA on HLE (44.9%) and BrowseComp (60.2%)\n🔹 Executes up to 200 – 300 sequential tool calls without human interference\n🔹 256K context window',
+    likes:9667, rts:1494, replies:578, views:4844921,
+    insight:'第一次用 "Hello" 钩子 — 留给最重大开源版本'},
+  {rank:'vi.', date:'2026-01-27', tag:'创始人露脸', tagFull: 'event',
+    text:'Here\'s a short video from our founder, Zhilin Yang.\n\n(It\'s his first time speaking on camera like this, and he really wanted to share Kimi K2.5 with you!)',
+    likes:9475, rts:849, replies:232, views:1682429,
+    insight:'"第一次面对镜头" — 把出镜本身变成事件'},
+  {rank:'vii.', date:'2025-07-11', tag:'Hello · 开源', tagFull: 'release',
+    text:'🚀 Hello, Kimi K2! Open-Source Agentic Model!\n🔹 1T total / 32B active MoE model\n🔹 SOTA on SWE Bench Verified, Tau2 & AceBench among open models\n🔹Strong in coding and agentic tasks',
+    likes:6626, rts:1147, replies:276, views:2686570,
+    insight:'分水岭事件 — 账号从此从「期刊」转为「新闻台」'},
+  {rank:'viii.', date:'2026-01-27', tag:'Meet · 后续', tagFull: 'release',
+    text:'Kimi K2.5 has arrived! 🥝\nHere are 2 things to know: Aesthetic Coding x Agent Swarm.',
+    likes:6078, rts:510, replies:134, views:616114,
+    insight:'同日第二条 — 用更短的标题做"提示式"复用'},
+  {rank:'ix.', date:'2026-04-20', tag:'Meet · 用例', tagFull: 'release',
+    text:'Meet Kimi K2.6 agent - Video hero section, WebGL shaders, real backends. From one prompt.\n\n🔹 Video hero sections - cinematic aesthetic, auto-composited\n🔹 WebGL shader animations - native GLSL / WGSL',
+    likes:4905, rts:418, replies:105, views:383887,
+    insight:'用具体能力 ("video hero / shader / backends") 替代抽象描述'},
+  {rank:'x.', date:'2026-04-23', tag:'Meet · 数字密度', tagFull: 'release',
+    text:'Meet Kimi K2.6 Agent Swarm 👋\n\nHighlights：\n🔹 Swarms, elevated - 300 parallel sub-agents × 4,000 steps per run (up from 100 / 1,500 in K2.5).\n🔹 Outputs are real files, not chat',
+    likes:3722, rts:326, replies:105, views:606088,
+    insight:'数字 + 与上一版对比 = 进步可量化'},
+];
+const topGrid = document.getElementById('top-grid');
+topGrid.innerHTML = TOP10.map(t => `
+  <div class="top-card" data-date="${t.date}">
+    <div class="top-card-header">
+      <div>
+        <div class="rank">${t.rank}</div>
+        <div class="tag">${t.tag}</div>
+      </div>
+      <div class="date">${t.date}</div>
+    </div>
+    <div class="quote">${escapeHtml(t.text.replace(/https:\/\/t\.co\/\S+/g, '[link]'))}</div>
+    <div class="stats">
+      <span>♥ <span class="v hero">${t.likes.toLocaleString()}</span></span>
+      <span>RT <span class="v">${t.rts.toLocaleString()}</span></span>
+      <span>REP <span class="v">${t.replies.toLocaleString()}</span></span>
+      <span>VIEWS <span class="v">${fmt(t.views)}</span></span>
+    </div>
+    <div class="insight">→ ${t.insight}</div>
+  </div>
+`).join('');
+
+// Click top card → jump to date in calendar
+document.querySelectorAll('.top-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const date = card.dataset.date;
+    document.getElementById('calendar').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => {
+      const cell = document.querySelector(`.cell[data-date="${date}"]`);
+      if (cell) {
+        document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
+        cell.classList.add('selected');
+        renderTweetPanel(date);
+      }
+    }, 600);
+  });
+});
+
+// Click theme bar → filter calendar by theme
+document.querySelectorAll('.theme-bar').forEach((bar, i) => {
+  const themeMap = ['release','research','agent','context','benchmark','demo','community','event','partnership','promo'];
+  bar.addEventListener('click', () => {
+    const theme = themeMap[i];
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    const chip = document.querySelector(`.chip[data-filter="${theme}"]`);
+    if (chip) chip.classList.add('active');
+    else document.querySelector('.chip[data-filter="all"]').classList.add('active');
+    document.getElementById('calendar').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => applyFilter(theme), 500);
+  });
+});
+</script>
+
+</body>
+</html>
